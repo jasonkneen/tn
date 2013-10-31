@@ -1,10 +1,4 @@
 #!/usr/bin/env node
-
-/*
- * - GENERIEKE AFHANDELING VAN FLAGS (--retina) EN 1-1 (-F, -T..)
- * - CHECK OP titanium EN alias (DMV REQUIRE?)
- */
-
 var fs = require("fs"),
 	path = require("path"),
 	child_process = require('child_process'),
@@ -149,13 +143,3 @@ if (options.titanium) {
 		console.log('Done!');
 	});
 }
-
-/*
-exec('ti build --project-dir ~/dev/apps/MrMovie -p android -b', function(error, stdout, stderr) {
-
-	exec('adb install' + s + ' -r ~/dev/apps/MrMovie/build/android/bin/app.apk', function (error, stdout, stderr) {
-		console.log(stdout);
-	});
-
-});
-*/
