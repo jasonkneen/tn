@@ -1,0 +1,52 @@
+{
+  "about": {
+    "name": "TiNy Simple Command-Line Interface for Titanium",
+    "author": "Fokke Zandbergen",
+    "copyright": "Copyright (c) 2013, Fokke Zandbergen.  All Rights Reserved.",
+    "id": "nl.fokkezb.tn"
+  },
+  "name": "tn",
+  "description": "Simple wrapper for Titanium, Alloy and related CLIs",
+  "keywords": [
+    "appcelerator",
+    "titanium",
+    "mobile",
+    "ios",
+    "iphone",
+    "android",
+    "alloy",
+    "cli"
+  ],
+  "version": "0.0.2",
+  "author": {
+    "name": "Fokke Zandbergen",
+    "email": "mail@fokkezb.nl"
+  },
+  "maintainers": [{
+    "name": "Fokke Zandbergen",
+    "email": "mail@fokkezb.nl"
+  }],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fokkezb/tn.git"
+  },
+  "preferGlobal": true,
+  "dependencies": {
+    "colors": "0.6.0-1",
+    "pkginfo": "0.2.2"
+  },
+  "license": "Apache Public License v2",
+  "bin": "./cli.js",
+  "main": "./cli.js",
+  "directories": {
+    "lib": "./lib"
+  },
+  "engines": {
+    "node": ">=0.8"
+  },
+  "readme": "",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/fokkezb/tn/issues"
+  }
+}
