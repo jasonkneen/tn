@@ -11,7 +11,7 @@ TiNy is built on [Node.js](http://nodejs.org/). Once you have Node.js installed 
 sudo npm install -g tn
 ```
 
-### Build an app for iOS
+### Build an app
 The default options for TiNy are set to execute `ti build` for iOS. So even without passing any argument, TiNy will build your app for iOS and launch it in the simulator:
 
 ```
@@ -23,6 +23,22 @@ The simple CLI for Titanium, Alloy and related tools.
 ...
 ```
 
+Another example bulding an app for the App Store:
+
+```
+$ tn appstore 37304C9F-B2E0-490A-9800-0448A33BECE9 "Fokke Zandbergen (E8978765FC)"
+```
+
+Or using custom [recipes](#recipes):
+
+```
+$ tn myapp: 37304C9F-B2E0-490A-9800-0448A33BECE9
+$ tn me: "Fokke Zandbergen (E8978765FC)"
+$ tn shipit: appstore myapp me
+
+$ tn shipit
+```
+
 ## Arguments
 
 ### System arguments
@@ -31,9 +47,9 @@ Some arguments have to do with how TiNy works:
 Argument(s) | Description
 ----------- | -----------
 `v`, `version`, `-v` | Prints TiNy version. Must be first argument.
-`aliases` | Prints system and user(overridden) aliases. Must be first argument.
+`recipes` | Prints system and user(overridden) recipes. Must be first argument.
 `debug` | Doesn't execute final command, only prints it.
-`[a-z]+:` | Sets or unsets an alias, see [Aliases](#aliases).
+`[a-z]+:` | Sets or unsets an recipe, see [Recipes](#recipes).
 
 ### Smart arguments
 The best way to keep TiNy tiny is to guess the key by its value and to understand the relationship between arguments:
@@ -45,6 +61,7 @@ Argument | Param | Comments
 `iphone`, `ipad`, `universal` | `-F [arg] -p ios` | Sets the device family, but also platform to `ios`
 3.1.3.GA | `-s [arg]` | Sets the SDK version
 37304C9F-B2E0-490A-9800-0448A33BECE9 | `-P [arg] -p ios` | Sets the provisioning profile UUID, but also platform to `ios`
+Fokke Zandbergen `(`E8978765FC`)` | `-R/V [arg]` | Sets the developer or distribution certificate name, depending on target. Also sets platform to `ios`.
 /path/to/my`.keystore` | `-K [arg]`| Sets the keystore, but also platform to `android`
 /just/some`/`path | `-O [arg]` | Sets the output path, but only if an earlier argument has set the platform to `blackberry` or the target to `dist-playstore` or `dist-adhoc`
 
@@ -52,62 +69,67 @@ Argument | Param | Comments
 If there's no smart argument for what you need, you can set any param on the executed command directly by using various available key-value notation styles:
 
 ```
-tn -R "Fokke Zandbergen"
-tn R="Fokke Zandbergen"
-tn R:"Fokke Zandbergen"
-tn --distribution-name FokkeZB
-tn distribution-name=FokkeZB
-tn distribution-name:FokkeZB
-tn -retina
-tn --retina
+$ tn -R "Fokke Zandbergen"
+$ tn R="Fokke Zandbergen"
+$ tn R:"Fokke Zandbergen"
+$ tn --distribution-name FokkeZB
+$ tn distribution-name=FokkeZB
+$ tn distribution-name:FokkeZB
+$ tn -retina
+$ tn --retina
 ```
 
 I prefer the `K=value` style since it takes the least keystrokes :)
 
-## Aliases
-Aliases are arguments that stand for one or more other arguments. By defining custom aliases you could build a certain app for the App Store by simply calling:
+## Recipes
+Recipes are arguments that stand for one or more other arguments. By defining custom recipes you could build a certain app for the App Store by simply calling:
 
 ```
-tn shipit
+$ tn shipit
 ```
 
-### Built-in system aliases
-TiNy comes with a growing number of built-in aliases:
+### Built-in system recipes
+TiNy comes with a growing number of built-in recipes:
 
-Alias | Argument(s)
------ | -----------
+Recipe | Argument(s)
+------ | -----------
 `appstore` | `dist-appstore`
 `playstore` | `dist-playstore`
 `play` | `dist-playstore`
 `dist` | `distribution`
 `adhoc` | `dist-adhoc`
 `desktop` | `~/Desktop`
+`iphone7` | `S=7.0 Y=iphone`
+`iphone6` | `S=6.1 Y=iphone`
+`ipad7` | `S=7.0 Y=ipad`
+`ipad6` | `S=6.1 Y=ipad`
 
-### Custom user aliases
-You can create a user alias for one or combination of arguments by stating the name of the alias as the first argument, followed by `:`. The following example lets you use `tn poop` to build an app for Google Play:
+### Custom user recipes
+You can create a user recipes for one or combination of arguments by stating the name of the recipes as the first argument, followed by `:`. The following example lets you use `tn poop` to build an app for Google Play:
 
 ```
-tn key: play ~/dev/.keystore
-tn me: L=fokke
-tn pass: P=iloveti
-tn poop: pass me key
+$ tn key: play ~/dev/.keystore
+$ tn me: L=fokke
+$ tn pass: P=iloveti
+$ tn poop: pass me key
 ```
 
-The user aliases are stored in `~/.tn.json`.
+The user recipes are stored in `~/.tn.json`.
 
 #### Loops
-As you can see aliases can also use other aliases. Whenever you use an alias, TiNy automagically prevents you from getting into a loop.
+As you can see recipes can also use other recipes. Whenever you use an recipes, TiNy automagically prevents you from getting into a loop.
 
 #### Overriding built-ins
-You can also use the name of a system alias for your custom one. This lets you override the built-in alias. To restore, simply unset your custom alias.
+You can also use the name of a system recipes for your custom one. This lets you override the built-in recipes. To restore, simply unset your custom recipes.
 
 ## Roadmap
 
+* Rewrite mapping of arguments to options/params internally.
 * Support more `ti` commands and the `alloy` CLI as well.
 * Support combining commands: `tn compile run` (compile Alloy and run TiShadow)
 * Add more smart arguments.
-* Add more built-in aliases.
-* Come up with more crappy Android aliases :)
+* Add more built-in recipes.
+* Come up with more crappy Android recipes :)
 
 ## Thanks to
 

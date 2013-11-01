@@ -4,5 +4,9 @@
 	"play": "dist-playstore",
 	"dist": "distribution",
 	"adhoc": "dist-adhoc",
-	"desktop": "~/Desktop"
+	"desktop": "~/Desktop",
+	"iphone7": "S=7.0",
+	"iphone6": "S=6.1",
+	"ipad7": ["S=7.0","Y=ipad"],
+	"ipad6": ["S=6.1","Y=ipad"]
 }

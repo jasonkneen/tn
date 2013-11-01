@@ -7,7 +7,7 @@ var fs = require("fs"),
     pkginfo = require('pkginfo')(module, 'version'),
     lb = require('os').EOL,
     logger = require("./lib/logger"),
-    aliases = require("./lib/aliases");
+    recipes = require("./lib/recipes");
 
 // config
 var config = {};
@@ -31,25 +31,25 @@ console.log("TiNy " + module.exports.version + " by Fokke Zandbergen <www.fokkez
 
 if (args[0]) {
 
-    // LIST ALIASES
-    if (args[0] === 'aliases') {
-        aliases.list();
+    // LIST RECIPES
+    if (args[0] === 'recipes') {
+        recipes.list();
         process.exit();
     }
 
-    // SET/UNSET ALIAS
-    var match, alias;
+    // SET/UNSET RECIPE
+    var match, recipe;
     if (match = args[0].match(/^([a-z0-9]+(-[a-z0-9]+)*):$/)) {
-        alias = match[1];
+        recipe = match[1];
 
         // UNSET (this is the only argument)
         if (args.length === 1) {
-            aliases.unset(alias);
+            recipes.unset(recipe);
         }
 
         // SET
         else {
-            aliases.set(alias, _.rest(args));
+            recipes.set(recipe, _.rest(args));
         }
 
         process.exit();
@@ -67,15 +67,15 @@ var options = {
 // params: what options (and some args) translate into
 var params = [];
 
-var i, l, arg, match, alias, aliases_done = [];
+var i, l, arg, match, recipe, recipes_done = [];
 
 // PROCESS ARGS
 for (i = 0, l = args.length; i < l; i++) {
     arg = args[i];
 
-    // APPLY ALIAS
-    if (aliases.has(arg)) {
-        args = aliases.apply(arg, args);
+    // APPLY RECIPE
+    if (recipes.has(arg)) {
+        args = recipes.apply(arg, args);
         l = args.length;
         i--;
     }
@@ -131,6 +131,12 @@ for (i = 0, l = args.length; i < l; i++) {
         options.platform = 'ios';
     }
 
+    // Certificate
+    else if (arg.match(/^.+ \([0-9A-Z]{10}\)/)) {
+        options.certificate = arg;
+        options.platform = 'ios';
+    }
+
     // SDK
     else if (arg.match(/^[0-9]\.[0-9]\.[0-9]/)) {
         options.sdk = arg;
@@ -180,7 +186,7 @@ for (i = 0, l = args.length; i < l; i++) {
 
     // UNKNOWN
     else {
-        logger.error('Unknown argument or alias: ' + arg);
+        logger.error('Unknown argument or recipe: ' + arg);
         process.exit();
     }}
 }
@@ -247,6 +253,11 @@ if (options.titanium) {
 
     if (options.uuid) {
         params.push('-P', options.uuid);
+    }
+
+    if (options.certificate) {
+        params.push((options.target === 'device') ? '-V' : '-R', options.certificate);
+
     }
 
     params.push('-p', options.platform);
