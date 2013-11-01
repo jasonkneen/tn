@@ -111,9 +111,9 @@ You can also use the name of a system alias for your custom one. This lets you o
 
 ## Thanks to
 
-* @tonylukasavage for the [logger](https://github.com/appcelerator/alloy/blob/master/Alloy/logger.js)
-* @rborn for inspiring me with [SugarTi](https://github.com/rborn/SugarTi)
-* @dbankier for learning by contributing to [TiShadow](https://github.com/dbankier/TiShadow)
+* [tonylukasavage](https://github.com/tonylukasavage) for the [logger](https://github.com/appcelerator/alloy/blob/master/Alloy/logger.js)
+* [rborn](https://github.com/rborn) for inspiring me with [SugarTi](https://github.com/rborn/SugarTi)
+* [dbankier](https://github.com/dbankier) for learning by contributing to [TiShadow](https://github.com/dbankier/TiShadow)
 * Google for learning NodeJS CLIs
 * TiNy for being cute
 * Coffee
