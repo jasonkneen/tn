@@ -1,88 +1,134 @@
 #!/usr/bin/env node
+
 var fs = require("fs"),
     path = require("path"),
     child_process = require('child_process'),
+    _ = require('underscore'),
     pkginfo = require('pkginfo')(module, 'version'),
     lb = require('os').EOL,
-    logger = require("./lib/logger");
+    logger = require("./lib/logger"),
+    aliases = require("./lib/aliases");
 
-console.log("TiNy " + module.exports.version + " by Fokke Zandbergen <www.fokkezb.nl>." + lb + "The simple CLI for Titanium, Alloy and related tools." + lb);
-
-// CONFIG
+// config
 var config = {};
 config.cwd = process.cwd();
-config.home = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
 config.platforms = ['android', 'ios', 'tizen', 'blackberry', 'mobileweb'];
-config.targets = ['simulator', 'device', 'distribute', 'dist-appstore', 'dist-adhoc'];
+config.targets = ['simulator', 'device', 'distribute', 'dist-playstore', 'dist-appstore', 'dist-adhoc'];
+config.flags = ['b', 'build-only', 'f', 'force', 'legacy', 'skip-js-minify', 'force-copy', 'force-copy-all', 'retina', 'tall', 'debug'];
 config.family = ['iphone', 'ipad', 'universal'];
-config.aliases_path = path.join(config.home, '.tn.json');
+config.version = ['-v', 'v', 'version'];
 
-if (!fs.existsSync(path.join(config.cwd, 'tiapp.xml'))) {
-    logger.error("TiNy must be called in a Titanium project's root directory");
+// args: user input
+var args = process.argv.slice(2);
+
+// PRINT VERSION
+if (args[0] && _.contains(config.version, args[0])) {
+    console.log(module.exports.version);
     process.exit();
 }
 
-// OPTIONS = WHAT ARGS TRANSLATE TO
+console.log("TiNy " + module.exports.version + " by Fokke Zandbergen <www.fokkezb.nl>" + lb + "The simple CLI for Titanium, Alloy and related tools." + lb);
+
+if (args[0]) {
+
+    // LIST ALIASES
+    if (args[0] === 'aliases') {
+        aliases.list();
+        process.exit();
+    }
+
+    // SET/UNSET ALIAS
+    var match, alias;
+    if (match = args[0].match(/^([a-z0-9]+(-[a-z0-9]+)*):$/)) {
+        alias = match[1];
+
+        // UNSET (this is the only argument)
+        if (args.length === 1) {
+            aliases.unset(alias);
+        }
+
+        // SET
+        else {
+            aliases.set(alias, _.rest(args));
+        }
+
+        process.exit();
+    }
+}
+
+// options: what args translate into
 var options = {
     titanium: true,
     build: true,
-    platform: 'ios'
+    platform: 'ios',
+    debug: false
 };
 
-// ALIASES = USER DEFINED GROUPS OF ARGS
-var aliases = fs.existsSync(config.aliases_path) ? require(config.aliases_path) : {};
+// params: what options (and some args) translate into
+var params = [];
 
-// ARGS = USER INPUT
-var args = process.argv.slice(2),
-    i, l, arg, match, alias;
+var i, l, arg, match, alias, aliases_done = [];
 
 // PROCESS ARGS
 for (i = 0, l = args.length; i < l; i++) {
     arg = args[i];
 
+    // APPLY ALIAS
+    if (aliases.has(arg)) {
+        args = aliases.apply(arg, args);
+        l = args.length;
+        i--;
+    }
+
+    // DEBUG
+    else if (arg === 'debug') {
+        options.debug = true;
+    }
+
     // PLATFORM
-    if (config.platforms.indexOf(arg) !== -1) {
+    else if (config.platforms.indexOf(arg) !== -1) {
         options.platform = arg;
+
+        // Default output
+        if (!options.output && arg === 'blackberry') {
+            options.output = '~/Desktop';
+        }
     }
 
     // TARGET
     else if (config.targets.indexOf(arg) !== -1) {
         options.target = arg;
+
+        // Default output
+        if (!options.output && (arg === 'dist-playstore' || arg === 'dist-adhoc')) {
+            options.output = '~/Desktop';
+        }
+
+        // Map target to platform
+
+        if (arg === 'dist-playstore') {
+            options.platform = 'android';
+        }
+
+        else if (arg === 'dist-appstore' || arg === 'dist-adhoc') {
+            options.platform = 'ios';
+        }
+
+        else if (arg === 'distribute') {
+            options.platform = 'blackberry';
+        }
     }
 
     // FAMILY
     else if (config.family.indexOf(arg) !== -1) {
         options.family = arg;
+        options.platform = 'ios';
     }
 
-    // APPLY ALIAS
-    else if (aliases[arg]) {
-        args = args.concat(aliases[arg]);
-        l = args.length;
-    }
-
-    // REMOVE/ADD ALIAS
-    else if (match = arg.match(/^alias:([a-z0-9]+)$/)) {
-        alias = match[1];
-
-        if (l === 1) {
-
-            if (aliases[alias]) {
-                delete aliases[alias];
-                logger.info('Removed alias: ' + alias);
-            } else {
-                logger.error('Could not find alias: ' + alias);
-                process.exit();
-            }
-
-        } else {
-            args.splice(i, 1);
-            logger.info((aliases[alias] ? 'Updated' : 'Added') + ' alias: ' + alias);
-            aliases[alias] = args;
-        }
-
-        fs.writeFileSync(config.aliases_path, JSON.stringify(aliases));
-        process.exit();
+    // UUID
+    else if (arg.match(/^[0-9A-Z]{8}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{12}/)) {
+        options.uuid = arg;
+        options.platform = 'ios';
     }
 
     // SDK
@@ -90,41 +136,97 @@ for (i = 0, l = args.length; i < l; i++) {
         options.sdk = arg;
     }
 
-    // IP
-    else if (arg.match(/^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+/)) {
-        options.ip = arg;
+    // KEYSTORE
+    else if (arg.match(/\.keystore$/)) {
+        options.keystore = arg;
+        options.platform = 'android';
     }
 
-    // FORCE
-    else if (arg === 'force') {
-        options.force = true;
+    // OUTPUT
+    else { if (arg.match(/^\/.+/) && (options.platform === 'blackberry' || options.target === 'dist-playstore' || options.target === 'dist-adhoc')) {
+        options.output = arg;
     }
+
+    // PARAM (key:val OR key=val)
+    else if (match = arg.match(/^(.+)(?:=|:)(.+)$/)) {
+        params.push(((match[1].length === 1) ? '-' : '--') + match[1], match[2]);
+    }
+
+    // PARAM (-K val OR --key val)
+    else if (match = arg.match(/^[-]+([a-z-]+)$/i)) {
+
+        // Change -retina to --retina
+        if (match[1].length > 1) {
+            arg = '--' + match[1];
+        }
+
+        // FLAG
+        if (_.contains(config.flags, match[1])) {
+            params.push(arg);
+        }
+
+        // KEY-VALUE
+        else  if (args[i + 1]) {
+            params.push(arg, args[i + 1]);
+            i++;
+        }
+
+        // MISSING VALUE
+        else {
+            logger.error('Missing value for: ' + match[1]);
+            process.exit();
+        }
+    }
+
+    // UNKNOWN
+    else {
+        logger.error('Unknown argument or alias: ' + arg);
+        process.exit();
+    }}
+}
+
+// If we got this far we need to be in a project
+if (!fs.existsSync(path.join(config.cwd, 'tiapp.xml'))) {
+    logger.error("TiNy must be called in a Titanium project's root directory");
+    process.exit();
 }
 
 function execute(executable, params, callback) {
+
+    var command = executable;
+
+    _.each(params, function(value, key) {
+        command = command + ' ' + ((value.indexOf(' ') !== -1) ? '"' + value + '"' : value);
+    });
+
+    if (options.debug) {
+        console.log('Command: ' + command.green);
+        process.exit();
+    }
+
+    logger.info('Executing: ' + command + lb);
+
     var spawned = child_process.spawn(executable, params);
 
     spawned.stdout.setEncoding('utf8');
     spawned.stdout.pipe(process.stdout);
     spawned.stderr.pipe(process.stderr);
-    spawned.on('close', function() { !! callback && callback();
+    spawned.on('close', function() {
+        if ( !! callback) {
+            callback();
+        }
     });
 };
 
 if (options.titanium) {
-    var executable = 'titanium',
-        params = [];
+    var executable = 'ti';
 
     if (options.build) {
-        params.push('build');
+        params.unshift('build');
     }
 
     if (options.sdk) {
         params.push('-s', options.sdk);
-    }
-
-    if (options.force) {
-        params.push('-f');
     }
 
     if (options.target) {
@@ -135,11 +237,19 @@ if (options.titanium) {
         params.push('-F', options.family);
     }
 
+    if (options.keystore) {
+        params.push('-K', options.keystore);
+    }
+
+    if (options.output) {
+        params.push('-O', options.output);
+    }
+
+    if (options.uuid) {
+        params.push('-P', options.uuid);
+    }
+
     params.push('-p', options.platform);
 
-    logger.info('Executing: ' + executable + ' ' + params.join(' ') + lb);
-
-    execute(executable, params, function() {
-        console.log('Done!');
-    });
+    execute(executable, params);
 }

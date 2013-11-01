@@ -1,0 +1,8 @@
+{
+	"appstore": "dist-appstore",
+	"playstore": "dist-playstore",
+	"play": "dist-playstore",
+	"dist": "distribution",
+	"adhoc": "dist-adhoc",
+	"desktop": "~/Desktop"
+}

@@ -17,7 +17,7 @@
     "alloy",
     "cli"
   ],
-  "version": "0.0.3",
+  "version": "0.1.0",
   "author": {
     "name": "Fokke Zandbergen",
     "email": "mail@fokkezb.nl"
@@ -32,8 +32,9 @@
   },
   "preferGlobal": true,
   "dependencies": {
-    "colors": "0.6.0-1",
-    "pkginfo": "0.2.2"
+    "colors": ">=0.6.0-1",
+    "pkginfo": ">=0.2.2",
+    "underscore": ">=1.5.2"
   },
   "license": "Apache Public License v2",
   "bin": "./cli.js",
