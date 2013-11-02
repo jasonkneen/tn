@@ -1,12 +1,12 @@
 {
   "about": {
-    "name": "TiNy Simple Command-Line Interface for Titanium",
+    "name": "TiNy Smart Command-Line Interface for Titanium",
     "author": "Fokke Zandbergen",
     "copyright": "Copyright (c) 2013, Fokke Zandbergen.  All Rights Reserved.",
     "id": "nl.fokkezb.tn"
   },
   "name": "tn",
-  "description": "Simple wrapper for Titanium, Alloy and related CLIs",
+  "description": "Smart and Simple wrapper for Titanium, Alloy and related CLIs",
   "keywords": [
     "appcelerator",
     "titanium",
@@ -17,7 +17,7 @@
     "alloy",
     "cli"
   ],
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": {
     "name": "Fokke Zandbergen",
     "email": "mail@fokkezb.nl"
@@ -34,7 +34,8 @@
   "dependencies": {
     "colors": ">=0.6.0-1",
     "pkginfo": ">=0.2.2",
-    "underscore": ">=1.5.2"
+    "underscore": ">=1.5.2",
+    "commander-plus": ">=0.0.6"
   },
   "license": "Apache Public License v2",
   "bin": "./cli.js",
@@ -45,6 +46,7 @@
   "engines": {
     "node": ">=0.8"
   },
+  "homepage": "http://fokkezb.nl/tag/tiny",
   "readme": "",
   "readmeFilename": "README.md",
   "bugs": {

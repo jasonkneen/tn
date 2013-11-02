@@ -3,6 +3,7 @@
 var fs = require("fs"),
     path = require("path"),
     child_process = require('child_process'),
+    program = require('commander-plus'),
     _ = require('underscore'),
     pkginfo = require('pkginfo')(module, 'version'),
     lb = require('os').EOL,
@@ -37,13 +38,18 @@ if (args[0]) {
         process.exit();
     }
 
-    // SET/UNSET RECIPE
+    // SET/UNSET/RENAME RECIPE
     var match, recipe;
-    if (match = args[0].match(/^([a-z0-9]+(-[a-z0-9]+)*):$/)) {
+    if (match = args[0].match(/^([a-z0-9]+(?:-[a-z0-9]+)*):([a-z0-9]+(?:-[a-z0-9]+)*)?$/)) {
         recipe = match[1];
 
+        // RENAME (new:old)
+        if (typeof match[2] !== 'undefined') {
+            recipes.rename(recipe, match[2]);
+        }
+
         // UNSET (this is the only argument)
-        if (args.length === 1) {
+        else if (args.length === 1) {
             recipes.unset(recipe);
         }
 
@@ -61,7 +67,7 @@ var options = {
     titanium: true,
     build: true,
     platform: 'ios',
-    debug: false
+    verbose: false
 };
 
 // params: what options (and some args) translate into
@@ -78,11 +84,16 @@ for (i = 0, l = args.length; i < l; i++) {
         args = recipes.apply(arg, args);
         l = args.length;
         i--;
+
+        // verbose enabled
+        if (options.verbose) {
+            logger.trace("Expanded '" + arg + "' resulting in: " + args.join(' '));
+        }
     }
 
-    // DEBUG
-    else if (arg === 'debug') {
-        options.debug = true;
+    // VERBOSE
+    else if (arg === 'verbose') {
+        options.verbose = true;
     }
 
     // PLATFORM
@@ -108,13 +119,9 @@ for (i = 0, l = args.length; i < l; i++) {
 
         if (arg === 'dist-playstore') {
             options.platform = 'android';
-        }
-
-        else if (arg === 'dist-appstore' || arg === 'dist-adhoc') {
+        } else if (arg === 'dist-appstore' || arg === 'dist-adhoc') {
             options.platform = 'ios';
-        }
-
-        else if (arg === 'distribute') {
+        } else if (arg === 'distribute') {
             options.platform = 'blackberry';
         }
     }
@@ -149,46 +156,48 @@ for (i = 0, l = args.length; i < l; i++) {
     }
 
     // OUTPUT
-    else { if (arg.match(/^\/.+/) && (options.platform === 'blackberry' || options.target === 'dist-playstore' || options.target === 'dist-adhoc')) {
-        options.output = arg;
-    }
-
-    // PARAM (key:val OR key=val)
-    else if (match = arg.match(/^(.+)(?:=|:)(.+)$/)) {
-        params.push(((match[1].length === 1) ? '-' : '--') + match[1], match[2]);
-    }
-
-    // PARAM (-K val OR --key val)
-    else if (match = arg.match(/^[-]+([a-z-]+)$/i)) {
-
-        // Change -retina to --retina
-        if (match[1].length > 1) {
-            arg = '--' + match[1];
+    else {
+        if (arg.match(/^\/.+/) && (options.platform === 'blackberry' || options.target === 'dist-playstore' || options.target === 'dist-adhoc')) {
+            options.output = arg;
         }
 
-        // FLAG
-        if (_.contains(config.flags, match[1])) {
-            params.push(arg);
+        // PARAM (key:val OR key=val)
+        else if (match = arg.match(/^(.+)(?:=|:)(.+)$/)) {
+            params.push(((match[1].length === 1) ? '-' : '--') + match[1], match[2]);
         }
 
-        // KEY-VALUE
-        else  if (args[i + 1]) {
-            params.push(arg, args[i + 1]);
-            i++;
+        // PARAM (-K val OR --key val)
+        else if (match = arg.match(/^[-]+([a-z-]+)$/i)) {
+
+            // Change -retina to --retina
+            if (match[1].length > 1) {
+                arg = '--' + match[1];
+            }
+
+            // FLAG
+            if (_.contains(config.flags, match[1])) {
+                params.push(arg);
+            }
+
+            // KEY-VALUE
+            else if (args[i + 1]) {
+                params.push(arg, args[i + 1]);
+                i++;
+            }
+
+            // MISSING VALUE
+            else {
+                logger.error('Missing value for: ' + match[1]);
+                process.exit();
+            }
         }
 
-        // MISSING VALUE
+        // UNKNOWN
         else {
-            logger.error('Missing value for: ' + match[1]);
+            logger.error('Unknown argument or recipe: ' + arg);
             process.exit();
         }
     }
-
-    // UNKNOWN
-    else {
-        logger.error('Unknown argument or recipe: ' + arg);
-        process.exit();
-    }}
 }
 
 // If we got this far we need to be in a project
@@ -205,13 +214,42 @@ function execute(executable, params, callback) {
         command = command + ' ' + ((value.indexOf(' ') !== -1) ? '"' + value + '"' : value);
     });
 
-    if (options.debug) {
-        console.log('Command: ' + command.green);
-        process.exit();
+    if (options.verbose) {
+        console.log(lb + 'Command: ' + command.green + lb);
+        console.log('What would you like me to do with this?');
+
+        program.choose(['Execute it', 'Save it as a recipe (non-verbose)', 'Exit'], function(i) {
+
+            if (i === 0) {
+                spawn(executable, params);
+            }
+
+            else if (i === 1) {
+                console.log(lb + 'What do you want to name it?')
+                program.prompt('  : ', function(name) {
+
+                    if (name) {
+                        console.log('');
+                        recipes.set(name, _.without(args, 'verbose'));
+                    }
+
+                    process.exit();
+                });
+            }
+
+            else {
+                process.exit();
+            }
+        });
+
+    } else {
+
+        logger.info('Executing: ' + command + lb);
+        spawn(executable, params);
     }
+}
 
-    logger.info('Executing: ' + command + lb);
-
+function spawn(executable, params) {
     var spawned = child_process.spawn(executable, params);
 
     spawned.stdout.setEncoding('utf8');
@@ -222,7 +260,7 @@ function execute(executable, params, callback) {
             callback();
         }
     });
-};
+}
 
 if (options.titanium) {
     var executable = 'ti';

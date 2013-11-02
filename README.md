@@ -2,6 +2,9 @@
 
 TiNy is CLI wrapper for the official [Titanium](http://docs.appcelerator.com/titanium/latest/#!/guide/Titanium_Command-Line_Interface_Reference), [Alloy](http://docs.appcelerator.com/titanium/latest/#!/guide/Alloy_Command-Line_Interface_Reference) and related CLI's to make the world a better place by minimizing the amount of keyboard strokes per common task.
 
+* Blogs on TiNy: [http://fokkezb.nl/tag/tiny/](http://fokkezb.nl/tag/tiny/)
+* TiNy on NPM: [https://npmjs.org/package/tn](https://npmjs.org/package/tn)
+
 ## Quick Start
 
 ### Install from NPM
@@ -34,9 +37,9 @@ Or using custom [recipes](#recipes):
 ```
 $ tn myapp: 37304C9F-B2E0-490A-9800-0448A33BECE9
 $ tn me: "Fokke Zandbergen (E8978765FC)"
-$ tn shipit: appstore myapp me
+$ tn ship-it: appstore myapp me
 
-$ tn shipit
+$ tn ship-it
 ```
 
 ## Arguments
@@ -48,8 +51,9 @@ Argument(s) | Description
 ----------- | -----------
 `v`, `version`, `-v` | Prints TiNy version. Must be first argument.
 `recipes` | Prints system and user(overridden) recipes. Must be first argument.
-`debug` | Doesn't execute final command, only prints it.
-`[a-z]+:` | Sets or unsets an recipe, see [Recipes](#recipes).
+`verbose` | Shows how recipes are expanded, shows the resulting command and asks if you want to execute it, save it as recipe or just exit.
+`[my-recipe]:` | Sets or unsets an recipe. See [Recipes](#recipes).
+`[new-recipe]:[old-recipe]` | Renames a recipe. See [Recipes](#recipes).
 
 ### Smart arguments
 The best way to keep TiNy tiny is to guess the key by its value and to understand the relationship between arguments:
@@ -82,11 +86,7 @@ $ tn --retina
 I prefer the `K=value` style since it takes the least keystrokes :)
 
 ## Recipes
-Recipes are arguments that stand for one or more other arguments. By defining custom recipes you could build a certain app for the App Store by simply calling:
-
-```
-$ tn shipit
-```
+Recipes are arguments that stand for one or more other arguments.
 
 ### Built-in system recipes
 TiNy comes with a growing number of built-in recipes:
@@ -116,11 +116,21 @@ $ tn poop: pass me key
 
 The user recipes are stored in `~/.tn.json`.
 
-#### Loops
-As you can see recipes can also use other recipes. Whenever you use an recipes, TiNy automagically prevents you from getting into a loop.
-
 #### Overriding built-ins
 You can also use the name of a system recipes for your custom one. This lets you override the built-in recipes. To restore, simply unset your custom recipes.
+
+#### Using verbose
+You can add `verbose` to see exactly what happends and what the final command is, before actually executing it or saving it as a recipe.
+
+#### Renaming recipes
+You can rename an existing user recipe like this:
+
+```
+$ tn old-name:new-name
+```
+
+#### Loops
+As you can see recipes can also use other recipes. Whenever you use an recipes, TiNy automagically prevents you from getting into a loop.
 
 ## Roadmap
 
