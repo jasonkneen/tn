@@ -295,7 +295,6 @@ if (options.titanium) {
 
     if (options.certificate) {
         params.push((options.target === 'device') ? '-V' : '-R', options.certificate);
-
     }
 
     params.push('-p', options.platform);
