@@ -96,7 +96,7 @@ for (i = 0, l = args.length; i < l; i++) {
 
         // verbose enabled
         if (options.verbose) {
-            logger.trace("Expanded '" + arg + "' resulting in: " + args.join(' '));
+            logger.trace("Cooked '" + arg + "', resulting in: " + args.join(' '));
         }
     }
 
@@ -140,12 +140,14 @@ for (i = 0, l = args.length; i < l; i++) {
     else if (arg.match(/^[0-9A-Z]{8}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{12}/)) {
         options.uuid = arg;
         options.platform = 'ios';
+        options.target = options.target || 'dist-appstore';
     }
 
     // Certificate
     else if (arg.match(/^.+ \([0-9A-Z]{10}\)/)) {
         options.certificate = arg;
         options.platform = 'ios';
+        options.target = options.target || 'dist-appstore';
     }
 
     // SDK
@@ -160,8 +162,7 @@ for (i = 0, l = args.length; i < l; i++) {
     }
 
     // OUTPUT
-    else
-    if (arg.match(/^\/.+/) && (options.platform === 'blackberry' || options.target === 'dist-playstore' || options.target === 'dist-adhoc')) {
+    else if (arg.match(/^\/.+/) && (options.platform === 'blackberry' || options.target === 'dist-playstore' || options.target === 'dist-adhoc')) {
         options.output = arg;
     }
 
