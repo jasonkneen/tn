@@ -20,7 +20,16 @@ config.family = ['iphone', 'ipad', 'universal'];
 config.version = ['-v', 'v', 'version'];
 
 // args: user input
-var args = process.argv.slice(2);
+var args = process.argv.slice(2),
+    args_original;
+
+// options: what args translate into
+var options = {
+    titanium: true,
+    build: true,
+    platform: 'ios',
+    verbose: false
+};
 
 // PRINT VERSION
 if (args[0] && _.contains(config.version, args[0])) {
@@ -31,6 +40,7 @@ if (args[0] && _.contains(config.version, args[0])) {
 console.log("TiNy " + module.exports.version + " by Fokke Zandbergen <www.fokkezb.nl>" + lb + "The simple CLI for Titanium, Alloy and related tools." + lb);
 
 if (args[0]) {
+    var match, recipe, i;
 
     // LIST RECIPES
     if (args[0] === 'recipes') {
@@ -39,8 +49,7 @@ if (args[0]) {
     }
 
     // SET/UNSET/RENAME RECIPE
-    var match, recipe;
-    if (match = args[0].match(/^([a-z0-9]+(?:-[a-z0-9]+)*):([a-z0-9]+(?:-[a-z0-9]+)*)?$/)) {
+    else if (match = args[0].match(/^([a-z0-9]+(?:-[a-z0-9]+)*):([a-z0-9]+(?:-[a-z0-9]+)*)?$/)) {
         recipe = match[1];
 
         // RENAME (new:old)
@@ -60,15 +69,15 @@ if (args[0]) {
 
         process.exit();
     }
-}
 
-// options: what args translate into
-var options = {
-    titanium: true,
-    build: true,
-    platform: 'ios',
-    verbose: false
-};
+    // VERBOSE
+    i = _.indexOf(args, 'verbose');
+    if (i !== -1) {
+        options.verbose = true;
+        args.splice(i);
+        args_original = _.clone(args);
+    }
+}
 
 // params: what options (and some args) translate into
 var params = [];
@@ -89,11 +98,6 @@ for (i = 0, l = args.length; i < l; i++) {
         if (options.verbose) {
             logger.trace("Expanded '" + arg + "' resulting in: " + args.join(' '));
         }
-    }
-
-    // VERBOSE
-    else if (arg === 'verbose') {
-        options.verbose = true;
     }
 
     // PLATFORM
@@ -218,7 +222,7 @@ function execute(executable, params, callback) {
         console.log(lb + 'Command: ' + command.green + lb);
         console.log('What would you like me to do with this?');
 
-        program.choose(['Execute it', 'Save it as a recipe (non-verbose)', 'Exit'], function(i) {
+        program.choose(['Execute it', 'Save the original as a recipe (non-verbose)', 'Exit'], function(i) {
 
             if (i === 0) {
                 spawn(executable, params);
@@ -230,7 +234,7 @@ function execute(executable, params, callback) {
 
                     if (name) {
                         console.log('');
-                        recipes.set(name, _.without(args, 'verbose'));
+                        recipes.set(name, args_original);
                     }
 
                     process.exit();
