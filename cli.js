@@ -160,47 +160,46 @@ for (i = 0, l = args.length; i < l; i++) {
     }
 
     // OUTPUT
-    else {
-        if (arg.match(/^\/.+/) && (options.platform === 'blackberry' || options.target === 'dist-playstore' || options.target === 'dist-adhoc')) {
-            options.output = arg;
+    else
+    if (arg.match(/^\/.+/) && (options.platform === 'blackberry' || options.target === 'dist-playstore' || options.target === 'dist-adhoc')) {
+        options.output = arg;
+    }
+
+    // PARAM (key:val OR key=val)
+    else if (match = arg.match(/^(.+)(?:=|:)(.+)$/)) {
+        params.push(((match[1].length === 1) ? '-' : '--') + match[1], match[2]);
+    }
+
+    // PARAM (-K val OR --key val)
+    else if (match = arg.match(/^[-]+([a-z-]+)$/i)) {
+
+        // Change -retina to --retina
+        if (match[1].length > 1) {
+            arg = '--' + match[1];
         }
 
-        // PARAM (key:val OR key=val)
-        else if (match = arg.match(/^(.+)(?:=|:)(.+)$/)) {
-            params.push(((match[1].length === 1) ? '-' : '--') + match[1], match[2]);
+        // FLAG
+        if (_.contains(config.flags, match[1])) {
+            params.push(arg);
         }
 
-        // PARAM (-K val OR --key val)
-        else if (match = arg.match(/^[-]+([a-z-]+)$/i)) {
-
-            // Change -retina to --retina
-            if (match[1].length > 1) {
-                arg = '--' + match[1];
-            }
-
-            // FLAG
-            if (_.contains(config.flags, match[1])) {
-                params.push(arg);
-            }
-
-            // KEY-VALUE
-            else if (args[i + 1]) {
-                params.push(arg, args[i + 1]);
-                i++;
-            }
-
-            // MISSING VALUE
-            else {
-                logger.error('Missing value for: ' + match[1]);
-                process.exit();
-            }
+        // KEY-VALUE
+        else if (args[i + 1]) {
+            params.push(arg, args[i + 1]);
+            i++;
         }
 
-        // UNKNOWN
+        // MISSING VALUE
         else {
-            logger.error('Unknown argument or recipe: ' + arg);
+            logger.error('Missing value for: ' + match[1]);
             process.exit();
         }
+    }
+
+    // UNKNOWN
+    else {
+        logger.error('Unknown argument or recipe: ' + arg);
+        process.exit();
     }
 }
 
@@ -226,9 +225,7 @@ function execute(executable, params, callback) {
 
             if (i === 0) {
                 spawn(executable, params);
-            }
-
-            else if (i === 1) {
+            } else if (i === 1) {
                 console.log(lb + 'What do you want to name it?')
                 program.prompt('  : ', function(name) {
 
@@ -239,9 +236,7 @@ function execute(executable, params, callback) {
 
                     process.exit();
                 });
-            }
-
-            else {
+            } else {
                 process.exit();
             }
         });
