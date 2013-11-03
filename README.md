@@ -64,8 +64,8 @@ Argument | Param | Comments
 `simulator`, `device`, `distribute`, `dist-playstore`, `dist-appstore`, `dist-adhoc` | `-T [arg]` | Sets the target and - if it's platform-specific - the platform. For `dist-playstore` and `dist-adhoc` it also defaults `-O ~/Desktop`.
 `iphone`, `ipad`, `universal` | `-F [arg] -p ios` | Sets the device family, but also platform to `ios`
 3.1.3.GA | `-s [arg]` | Sets the SDK version
-37304C9F-B2E0-490A-9800-0448A33BECE9 | `-P [arg] -p ios` | Sets the provisioning profile UUID, platform to `ios` and defaults target to `dist-appstore`.
-Fokke Zandbergen `(`E8978765FC`)` | `-R/V [arg]` | Sets the developer or distribution certificate name, depending on target. Also sets platform to `ios` and defaults target to `dist-appstore`.
+37304C9F-b2e0-490A-9800-0448A33BECE9 | `-P [arg] -p ios` | Sets the provisioning profile UUID, platform to `ios` and defaults target to `dist-appstore`. May be entered lowercase as well!
+Fokke Zandbergen `(`e8978765fcs`)` | `-R/V [arg]` | Sets the developer or distribution certificate name, depending on target. Also sets platform to `ios` and defaults target to `dist-appstore`. May be entered lowercase as well!
 /path/to/my`.keystore` | `-K [arg]`| Sets the keystore, but also platform to `android`
 /just/some`/`path | `-O [arg]` | Sets the output path, but only if an earlier argument has set the platform to `blackberry` or the target to `dist-playstore` or `dist-adhoc`
 

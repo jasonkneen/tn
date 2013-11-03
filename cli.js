@@ -3,7 +3,7 @@
 var fs = require("fs"),
     path = require("path"),
     child_process = require('child_process'),
-    program = require('commander-plus'),
+    fields = require('fields'),
     _ = require('underscore'),
     pkginfo = require('pkginfo')(module, 'version'),
     lb = require('os').EOL,
@@ -49,7 +49,7 @@ if (args[0]) {
     }
 
     // SET/UNSET/RENAME RECIPE
-    else if (match = args[0].match(/^([a-z0-9]+(?:-[a-z0-9]+)*):([a-z0-9]+(?:-[a-z0-9]+)*)?$/)) {
+    else if (match = args[0].match(/^([a-z0-9]+(?:-[a-z0-9]+)*):([a-z0-9]+(?:-[a-z0-9]+)*)?$/i)) {
         recipe = match[1];
 
         // RENAME (new:old)
@@ -137,15 +137,15 @@ for (i = 0, l = args.length; i < l; i++) {
     }
 
     // UUID
-    else if (arg.match(/^[0-9A-Z]{8}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{12}/)) {
-        options.uuid = arg;
+    else if (arg.match(/^[0-9A-Z]{8}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{12}/i)) {
+        options.uuid = arg.toUpperCase();
         options.platform = 'ios';
         options.target = options.target || 'dist-appstore';
     }
 
     // Certificate
-    else if (arg.match(/^.+ \([0-9A-Z]{10}\)/)) {
-        options.certificate = arg;
+    else if (arg.match(/^.+ \([0-9A-Z]{10}\)/i)) {
+        options.certificate = arg.toUpperCase();
         options.platform = 'ios';
         options.target = options.target || 'dist-appstore';
     }
@@ -220,23 +220,56 @@ function execute(executable, params, callback) {
 
     if (options.verbose) {
         console.log(lb + 'Command: ' + command.green + lb);
-        console.log('What would you like me to do with this?');
 
-        program.choose(['Execute it', 'Save the original as a recipe (non-verbose)', 'Exit'], function(i) {
+        fields.select({
+            title: 'What would you like me to do?',
+            numbered: true,
+            options: [{
+                label: 'Execute it',
+                value: 'execute'
+            }, {
+                label: 'Save the original as a recipe (non-verbose)',
+                value: 'save'
+            }, {
+                label: 'Exit',
+                value: 'exit'
+            }]
+        }).prompt(function(err, value) {
 
-            if (i === 0) {
+            if (err) {
+               console.error(lb + ('' + err)['red']);
+
+            } else if (value === 'execute') {
                 spawn(executable, params);
-            } else if (i === 1) {
-                console.log(lb + 'What do you want to name it?')
-                program.prompt('  : ', function(name) {
 
-                    if (name) {
+            } else if (value === 'save') {
+
+                fields.text({
+                    title: 'What do you want to name it?',
+                    validate: function(value) {
+
+                        if (/^([a-z0-9]+(?:-[a-z0-9]+)*)$/i.test(value)) {
+                            return true;
+                        }
+
+                        console.error('Error: format as: my-Recipe'.red);
+
+                        return false;
+                    }
+                }).prompt(function(err, value) {
+
+                    if (err) {
+                        console.error(lb + ('' + err)['red']);
+                    }
+    
+                    else {
                         console.log('');
-                        recipes.set(name, args_original);
+                        recipes.set(value, args_original);
                     }
 
                     process.exit();
                 });
+
             } else {
                 process.exit();
             }
