@@ -14,6 +14,15 @@ TiNy is built on [Node.js](http://nodejs.org/). Once you have Node.js installed 
 sudo npm install -g tn
 ```
 
+### Install as Titanium CLI 3.2 hook
+You can optionally run TiNy as an hook for the new Titanium CLI 3.2:
+
+```
+tn hook
+```
+
+After having done this, you can both use `tn` and `ti ny`. The latter will run as an hook under the Titanium CLI. Future versions of TiNy will use some of the benefits that come with running as an hook instead of stand-aline.
+
 ### Build an app
 The default options for TiNy are set to execute `ti build` for iOS. So even without passing any argument, TiNy will build your app for iOS and launch it in the simulator:
 
