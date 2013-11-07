@@ -3,7 +3,8 @@
 TiNy is CLI wrapper for the official [Titanium](http://docs.appcelerator.com/titanium/latest/#!/guide/Titanium_Command-Line_Interface_Reference), [Alloy](http://docs.appcelerator.com/titanium/latest/#!/guide/Alloy_Command-Line_Interface_Reference) and related CLI's to make the world a better place by minimizing the amount of keyboard strokes per common task.
 
 * Blogs on TiNy: [http://fokkezb.nl/tag/tiny/](http://fokkezb.nl/tag/tiny/)
-* TiNy on NPM: [https://npmjs.org/package/tn](https://npmjs.org/package/tn)
+
+[![NPM](https://nodei.co/npm/tn.png?downloads=true&starts=true)](https://nodei.co/npm/tn/)
 
 ## Quick Start
 
