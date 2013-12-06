@@ -1,16 +1,16 @@
-var tiny = require('../lib/tiny');
+var _ = require('underscore');
 
-exports.cliVersion = '>=3.2';
-exports.title = 'TiNy';
-exports.desc = 'TiNy Smart CLI for Titanium';
-exports.extendedDesc = 'Fork me at http://github.com/fokkezb/tn';
+exports.cliVersion = '>=3.X';
 
-exports.config = function (logger, config, cli) {
-	return {
-		noAuth: true
-	}
-};
+exports.init = function(logger, config, cli) {
 
-exports.run = function (logger, config, cli) {
-	tiny.run(cli.argv._);
+	_.each(['cli:command-not-found', 'cli:command-loaded', 'cli:pre-validate', 'cli:post-validate', 'cli:pre-execute', 'cli:post-execute'], function(hook) {
+
+		cli.on(hook, function(e, next) {
+			console.log(hook);
+
+			next();
+		});
+
+	});
 };
