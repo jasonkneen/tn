@@ -63,14 +63,14 @@ if (args[0] !== '-h' && args[0] !== '--help') {
 
   // install
   else if (cmd === 'install') {
-    displayBanner();
+    displayBanner(false);
 
     setup.install();
   }
 
   // uninstall
   else if (cmd === 'uninstall') {
-    displayBanner();
+    displayBanner(false);
 
     setup.uninstall();
   }
@@ -114,13 +114,16 @@ else {
   console.log();
 }
 
-function displayBanner() {
-  var notifier = updateNotifier({
-    packagePath: '../package.json'
-  });
+function displayBanner(update) {
 
-  // check for updates
-  notifier.update && notifier.notify();
+  if (update !== false) {
+    var notifier = updateNotifier({
+      packagePath: '../package.json'
+    });
+
+    // check for updates
+    notifier.update && notifier.notify();
+  }
 
   // display banner
   console.log('TiNy'.cyan.bold + ', version ' + package.version);
