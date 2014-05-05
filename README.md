@@ -1,164 +1,181 @@
-# TiNy
+# TiNy CLI [![Titanium](http://www-static.appcelerator.com/badges/titanium-git-badge-sq.png)](http://www.appcelerator.com/titanium/)
 
-TiNy is CLI wrapper for the official [Titanium](http://docs.appcelerator.com/titanium/latest/#!/guide/Titanium_Command-Line_Interface_Reference), [Alloy](http://docs.appcelerator.com/titanium/latest/#!/guide/Alloy_Command-Line_Interface_Reference) and related CLI's to make the world a better place by minimizing the amount of keyboard strokes per common task.
+TiNy is a hook for the [Titanium CLI](http://docs.appcelerator.com/titanium/latest/#!/guide/Titanium_Command-Line_Interface_Reference)'s `build` command that allows you to do the same using less keystrokes. It has built-in smarts (magic ingredients)and aliasses (recipes), but also allows you to compose and save your own recipes.
+
+**WARNING:** Version 1.0 is a complete rewrite with lots of breaking changes!
 
 * Blogs on TiNy: [http://fokkezb.nl/tag/tiny/](http://fokkezb.nl/tag/tiny/)
 
-[![NPM](https://nodei.co/npm/tn.png?downloads=true&starts=true)](https://nodei.co/npm/tn/)
+## Quick Start [![npm](http://img.shields.io/npm/v/tn.png)](https://www.npmjs.org/package/tn)
 
-## Quick Start
+1. Install [TiNy](http://npmjs.org/package/tn) via [NPM](http://npmjs.org):
 
-### Install from NPM
-TiNy is built on [Node.js](http://nodejs.org/). Once you have Node.js installed you can use the included NPM package manager to install [TiNy](https://npmjs.org/package/tn) via the following command:
+    ```
+    [sudo] npm install -g tn
+    ```
+    
+2. If for some reason hooking into the Titanium CLI failed, use the TiNY CLI for this:
 
-```
-sudo npm install -g tn
-```
+	```
+	tn install
+	```
 
-### Install as Titanium CLI 3.2 hook
-You can optionally run TiNy as an hook for the new Titanium CLI 3.2:
+3. Build a project to the iPad simulator using the built-in default `ios` recipe:
 
-```
-tn hook
-```
+	```
+	ti build ipad
+	```
+	
+	Or save 6 more keystrokes via the TiNy CLI. As long as the first argument doesn't match a TiNy CLI command it will pass any args on to `ti build`.
+	
+	```
+	tn ipad
+	```
+	
+4. Compose custom recipes and use magic ingredients:
 
-After having done this, you can both use `tn` and `ti ny`. The latter will run as an hook under the Titanium CLI. Future versions of TiNy will use some of the benefits that come with running as an hook instead of stand-aline.
+	```
+	tn save ship-my-app 37304C9F-B2E0-490A-9800-0448A33BECE9 "Fokke Zandbergen (E8978765FC)"
+	```
+	
+	And build a new version as easy as:
+	
+	```
+	ti build ship-my-app
+	```
 
-### Build an app
-The default options for TiNy are set to execute `ti build` for iOS. So even without passing any argument, TiNy will build your app for iOS and launch it in the simulator:
 
-```
-$ tn
-TiNy by Fokke Zandbergen <www.fokkezb.nl>
-The simple CLI for Titanium, Alloy and related tools.
+## Magic ingredients
+A magic ingredient allows you to set multiple options by recognizing characteristics of one of its values.
 
-[INFO] Executing: ti build -p ios
-...
-```
+### Provisioning Profile & Distribution Certificate
+An argument matching `/^[0-9A-Z]{8}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{4}-[0-9A-Z]{12}$/i` will be recognized and upper-cased as a value for the `pp-uuid` option.
 
-Another example bulding an app for the App Store:
+An argument matching `/^.+ \([0-9A-Z]{10}\)$/i` will be recognized and upper-cased as a value for either the `developer-name` or `distribution-name` option, depending on the `target` option, set either before or after.
 
-```
-$ tn appstore 37304C9F-B2E0-490A-9800-0448A33BECE9 "Fokke Zandbergen (E8978765FC)"
-```
+Both magic ingredients will also set `--platform ios` and `--target dist-appstore`, unless any other argument explicitely sets a different value.
 
-Or using custom [recipes](#recipes):
-
-```
-$ tn myapp: 37304C9F-B2E0-490A-9800-0448A33BECE9
-$ tn me: "Fokke Zandbergen (E8978765FC)"
-$ tn ship-it: appstore myapp me
-
-$ tn ship-it
-```
-
-## Arguments
-
-### System arguments
-Some arguments have to do with how TiNy works:
-
-Argument(s) | Description
------------ | -----------
-`v`, `version`, `-v` | Prints TiNy version. Must be first argument.
-`recipes` | Prints system and user(overridden) recipes. Must be first argument.
-`verbose` | Shows how recipes are expanded, shows the resulting command and asks if you want to execute it, save it as recipe or just exit.
-`[my-recipe]:` | Sets or unsets an recipe. See [Recipes](#recipes).
-`[new-recipe]:[old-recipe]` | Renames a recipe. See [Recipes](#recipes).
-
-### Smart arguments
-The best way to keep TiNy tiny is to guess the key by its value and to understand the relationship between arguments:
-
-Argument | Param | Comments
--------- | ----- | --------
-`android`, `ios`, `tizen`, `blackberry`, `mobileweb` | `-p [arg]` | Sets the platform. For `blackberry` it also defaults `-O ~/Desktop`.
-`simulator`, `device`, `distribute`, `dist-playstore`, `dist-appstore`, `dist-adhoc` | `-T [arg]` | Sets the target and - if it's platform-specific - the platform. For `dist-playstore` and `dist-adhoc` it also defaults `-O ~/Desktop`.
-`iphone`, `ipad`, `universal` | `-F [arg] -p ios` | Sets the device family, but also platform to `ios`
-3.1.3.GA | `-s [arg]` | Sets the SDK version
-37304C9F-b2e0-490A-9800-0448A33BECE9 | `-P [arg] -p ios` | Sets the provisioning profile UUID, platform to `ios` and defaults target to `dist-appstore`. May be entered lowercase as well!
-Fokke Zandbergen `(`e8978765fcs`)` | `-R/V [arg]` | Sets the developer or distribution certificate name, depending on target. Also sets platform to `ios` and defaults target to `dist-appstore`. May be entered lowercase as well!
-/path/to/my`.keystore` | `-K [arg]`| Sets the keystore, but also platform to `android`
-/just/some`/`path | `-O [arg]` | Sets the output path, but only if an earlier argument has set the platform to `blackberry` or the target to `dist-playstore` or `dist-adhoc`
-
-### Param arguments
-If there's no smart argument for what you need, you can set any param on the executed command directly by using various available key-value notation styles:
+#### Before:
 
 ```
-$ tn -R "Fokke Zandbergen"
-$ tn R="Fokke Zandbergen"
-$ tn R:"Fokke Zandbergen"
-$ tn --distribution-name FokkeZB
-$ tn distribution-name=FokkeZB
-$ tn distribution-name:FokkeZB
-$ tn -retina
-$ tn --retina
+ti build -p ios -T dist-appstore --pp-uid 37304C9F-B2E0-490A-9800-0448A33BECE9 --distribution-name "Fokke Zandbergen (E8978765FC)"
 ```
 
-I prefer the `K=value` style since it takes the least keystrokes :)
+#### After
+```
+ti build 37304C9F-B2E0-490A-9800-0448A33BECE9 "Fokke Zandbergen (E8978765FC)"
+```
+
+or
+
+```
+tn 37304C9F-B2E0-490A-9800-0448A33BECE9 "Fokke Zandbergen (E8978765FC)"
+```
+
+### SDK version
+An argument matching `/^[0-9]\.[0-9]\.[0-9]/` will be recognized as a value for the `sdk` option. If you don't pass an SDK version you will still see it in the final arguments as the Titanium CLI will always insert the default SDK version.
+
+### Keystore
+An argument matching `/\.keystore$/` will be recognized as a value for the `keystore` option. This will also set `--platform android` and `--target dist-playstore` unless any other arguments explicitly sets a different value.
 
 ## Recipes
-Recipes are arguments that stand for one or more other arguments.
+A recipe is simply an argument that stands for a group of other arguments, which may also include other recipes. There are built-in recipes, but you can also add your own or override built-ins.
 
-### Built-in system recipes
-TiNy comes with a growing number of built-in recipes:
+* List all recipes: `tn list`
 
-Recipe | Argument(s)
------- | -----------
-`appstore` | `dist-appstore`
-`playstore` | `dist-playstore`
-`play` | `dist-playstore`
-`dist` | `distribution`
-`adhoc` | `dist-adhoc`
-`desktop` | `~/Desktop`
-`iphone7` | `S=7.0 Y=iphone`
-`iphone6` | `S=6.1 Y=iphone`
-`ipad7` | `S=7.0 Y=ipad`
-`ipad6` | `S=6.1 Y=ipad`
+Colors will show you which recipes are built-in, user and user-overrides.
 
-### Custom user recipes
-You can create a user recipes for one or combination of arguments by stating the name of the recipes as the first argument, followed by `:`. The following example lets you use `tn poop` to build an app for Google Play:
+### Built-ins
+These are the current built-in recipes. In **bold** are recipes used within other recipes.
+
+* Build to iOS Simulator for iPad running 6.1: `ti build ipad6`
+
+If you have handy custom recipes you think everybody should have, please send a PR or open a ticket to have them added to the built-ins.
+
+|name|recipe|
+|----|------|
+|android|--platform android|
+|blackberry|--platform blackberry|
+|ios|--platform ios|
+|mobileweb|--platform mobileweb|
+|tizen|--platform tizen|
+|ipad|--device-family ipad|
+|iphone|--device-family iphone|
+|ip|**iphone**|
+|universal|--device-family universal|
+|uni|**universal**|
+|appstore|**ios** --target dist-appstore|
+|playstore|**android** --target dist-playstore|
+|play|**playstore**|
+|distribute|**blackberry** --target distribute|
+|dist|**distribute**|
+|adhoc|**ios** --target dist-adhoc|
+|emulator|--target emulator|
+|emu|**emulator**|
+|simulator|--target simulator|
+|sim|**simulator**|
+|device|--target device|
+|ioses|**ios** **device** --device-id all|
+|droid|**android** **device**|
+|desktop|-output-dir ~/Desktop|
+|ip7|--sim-version 7.0 --sim-type iphone|
+|ip6|--sim-version 6.1 --sim-type iphone|
+|ipad7|--sim-version 7.0 --sim-type ipad|
+|ipad6|--sim-version 6.1 --sim-type ipad|
+
+### Default recipe
+As you saw in the *Quick Start*, you can build for ios using just `ti build` or `tn`. This is because out of the box the `ios` built-in recipe is always prepended to the input arguments. You can change the default recipe using the CLI:
 
 ```
-$ tn key: play ~/dev/.keystore
-$ tn me: L=fokke
-$ tn pass: P=iloveti
-$ tn poop: pass me key
+tn default android device
 ```
 
-The user recipes are stored in `~/.tn.json`.
+### Custom recipes
 
-#### Overriding built-ins
-You can also use the name of a system recipes for your custom one. This lets you override the built-in recipes. To restore, simply unset your custom recipes.
-
-#### Using verbose
-You can add `verbose` to see exactly what happends and what the final command is, before actually executing it or saving it as a recipe.
-
-#### Renaming recipes
-You can rename an existing user recipe like this:
+The user recipes are stored in `~/.tn.json` and override built-in recipes sharing the same name. Use the TiNy CLI to edit them:
 
 ```
-$ tn old-name:new-name
+tn save ios --target android # overrides the built-in 'ios'
+rn rename ios confusing      # 'ios' will point to built-in again
+tn remove confusing
 ```
 
-#### Loops
-As you can see recipes can also use other recipes. Whenever you use an recipes, TiNy automagically prevents you from getting into a loop.
+#### Verbose mode
+If you want to know exactly what TiNy is doing, e.g. when you're composing a new recipe, you can enable verbose-mode by passing `verbose` as one of the arguments. Apart from showing how TiNy cooks the end-result, it will also pause before actually executing it, asking if you want to save it as a recipe, just run it or exit.
+
+## Titanium options & flags
+As a CLI hook TiNy knows all about the available options and flags for the specific SDK you're building against, including any options of other plug-ins. It uses this information to tell if an argument is an option or a flag, but that's not all.
+
+### Long names
+TiNy will also convert option abbreviations (`-T`)to long names (`--target`). It needs to do this to not end up with both `-T` and `--target` if a magic ingredient or recipe sets the same option.
+
+### Implicit platform
+If an argument is found to apply to only one platform, it will automatically also set the `platform` option itself. This enables you to do `ti build --device-family ipad`.
+
+## TiNy CLI
+As shown you can use the TiNy CLI as an alias for `ti build`. Because of the default recipe executing `tn` will not give you help. For this you will need to explicitely run `tn -h`.
+
+The help will show you the commands available, mainly for dealing with user recipes like described above.
+
+### Reset
+A command we haven't talked about yet it `tn reset`. This will simply delete `~/.tn.json` restoring all built-in recipes.
+
+### Install & Uninstall
+Two other commands only briefly mentioned in the Quick Start are for installing (`tn install`) and uninstalling (`tn uninstall`) TiNy as a hook for the Titanium CLI. These are executed automatically when you install or uninstall TiNy over NPM.
+
+## Breaking changes in 1.0
+Version 1.x is a complete re-write of TiNy, breaking:
+
+* No more support for `T=emulator` and `T:emulator` option+value notation.
+* No more magic ingredient for the `output` option.
+
+## Bugs
+When you find issues, please [report](https://github.com/FokkeZB/gittio/issues) them. Be sure to include *all* of the output from the gittio command that didn't work as expected. Also please check if there's not already in issue for it.
 
 ## Roadmap
-
-* Rewrite mapping of arguments to options/params internally.
-* Support more `ti` commands and the `alloy` CLI as well.
-* Support combining commands: `tn compile run` (compile Alloy and run TiShadow)
-* Add more smart arguments.
+* No longer need long names by checking both abbreviated and long name when setting an argument from a recipe or magic ingredient.
+* Add more magic ingredients.
 * Add more built-in recipes.
-* Come up with more crappy Android recipes :)
-
-## Thanks to
-
-* [tonylukasavage](https://github.com/tonylukasavage) for the [logger](https://github.com/appcelerator/alloy/blob/master/Alloy/logger.js)
-* [rborn](https://github.com/rborn) for inspiring me with [SugarTi](https://github.com/rborn/SugarTi)
-* [dbankier](https://github.com/dbankier) for learning by contributing to [TiShadow](https://github.com/dbankier/TiShadow)
-* Google for learning NodeJS CLIs
-* TiNy for being cute
-* Coffee
 
 ## License
 

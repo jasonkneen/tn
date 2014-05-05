@@ -1,12 +1,36 @@
 {
-	"appstore": "dist-appstore",
-	"playstore": "dist-playstore",
-	"play": "dist-playstore",
-	"dist": "distribution",
-	"adhoc": "dist-adhoc",
-	"desktop": "~/Desktop",
-	"iphone7": "S=7.0",
-	"iphone6": "S=6.1",
-	"ipad7": ["S=7.0","Y=ipad"],
-	"ipad6": ["S=6.1","Y=ipad"]
+	"_default": "ios",
+	
+	"android": ["--platform", "android"],
+	"blackberry": ["--platform", "blackberry"],
+	"ios": ["--platform", "ios"],
+	"mobileweb": ["--platform", "mobileweb"],
+	"tizen": ["--platform", "tizen"],
+
+	"ipad": ["--device-family", "ipad"],
+	"iphone": ["--device-family", "iphone"],
+	"ip": ["iphone"],
+	"universal": ["--device-family", "universal"],
+	"uni": ["universal"],
+
+	"appstore": ["ios", "--target", "dist-appstore"],
+	"playstore": ["android", "--target", "dist-playstore"],
+	"play": ["playstore"],
+	"distribute": ["blackberry", "--target", "distribute"],
+	"dist": ["distribute"],
+	"adhoc": ["ios", "--target", "dist-adhoc"],
+	"emulator": ["--target", "emulator"],
+	"emu": ["emulator"],
+	"simulator": ["--target", "simulator"],
+	"sim": ["simulator"],
+	"device": ["--target", "device"],
+	"ioses": ["ios", "device", "--device-id", "all"],
+	"droid": ["android", "device"],
+
+	"desktop": ["-output-dir", "~/Desktop"],
+
+	"ip7": ["--sim-version", "7.0", "--sim-type", "iphone"],
+	"ip6": ["--sim-version", "6.1", "--sim-type", "iphone"],
+	"ipad7": ["--sim-version", "7.0", "--sim-type", "ipad"],
+	"ipad6": ["--sim-version", "6.1", "--sim-type", "ipad"]
 }

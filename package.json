@@ -1,12 +1,12 @@
 {
   "about": {
-    "name": "TiNy Smart Command-Line Interface for Titanium",
+    "name": "TiNy Smart CLI for Titanium",
     "author": "Fokke Zandbergen",
     "copyright": "Copyright (c) 2013, Fokke Zandbergen.  All Rights Reserved.",
     "id": "nl.fokkezb.tn"
   },
   "name": "tn",
-  "description": "Smart and Simple wrapper for Titanium, Alloy and related CLIs",
+  "description": "Titanium CLI hook that makes 'ti build' a lot smarter!",
   "keywords": [
     "appcelerator",
     "titanium",
@@ -34,14 +34,17 @@
   },
   "preferGlobal": true,
   "dependencies": {
-    "colors": ">=0.6.0-1",
-    "pkginfo": ">=0.2.2",
-    "underscore": ">=1.5.2",
-    "fields": ">=0.1.11"
+    "colors": "^0.6.0-1",
+    "fields": "^0.1.12",
+    "underscore": "^1.5.2",
+    "update-notifier": "^0.1.8"
   },
   "license": "Apache Public License v2",
-  "bin": "./cli.js",
-  "main": "./cli.js",
+  "bin": "./bin/cli.js",
+  "scripts": {
+    "postinstall": "tn install",
+    "postuninstall": "tn uninstall"
+  },
   "directories": {
     "lib": "./lib"
   },
