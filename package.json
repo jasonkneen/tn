@@ -43,7 +43,7 @@
   "bin": "./bin/cli.js",
   "scripts": {
     "postinstall": "tn install",
-    "postuninstall": "tn uninstall"
+    "preuninstall": "tn uninstall"
   },
   "directories": {
     "lib": "./lib"
