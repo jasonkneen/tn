@@ -11,10 +11,12 @@ TiNy is a hook for the [Titanium CLI](http://docs.appcelerator.com/titanium/late
 1. Install [TiNy](http://npmjs.org/package/tn) via [NPM](http://npmjs.org):
 
     ```
-    [sudo] npm install -g tn
+    sudo npm install -g tn --unsafe-perm
     ```
     
-2. If for some reason hooking into the Titanium CLI failed, use the TiNY CLI for this:
+    You need `--unsafe-perm` to allow TiNy to hook into the Titanium CLI.
+    
+2. If for some reason hooking into the Titanium CLI still failed, use the TiNY CLI for this:
 
 	```
 	tn install
@@ -105,11 +107,14 @@ If you have handy custom recipes you think everybody should have, please send a 
 |universal|--device-family universal|
 |uni|**universal**|
 |appstore|**ios** --target dist-appstore|
+|as|**appstore**|
 |playstore|**android** --target dist-playstore|
 |play|**playstore**|
+|ps|**playstore**|
 |distribute|**blackberry** --target distribute|
 |dist|**distribute**|
 |adhoc|**ios** --target dist-adhoc|
+|ah|**adhoc**|
 |emulator|--target emulator|
 |emu|**emulator**|
 |simulator|--target simulator|
