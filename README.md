@@ -157,6 +157,9 @@ TiNy will also convert option abbreviations (`-T`)to long names (`--target`). It
 ### Implicit platform
 If an argument is found to apply to only one platform, it will automatically also set the `platform` option itself. This enables you to do `ti build --device-family ipad`.
 
+### Output dir
+If `--target` is set to `dist-adhoc` and no `--output-dir` is given, then the default `{CWD}/dist` will be set.
+
 ## TiNy CLI
 As shown you can use the TiNy CLI as an alias for `ti build`. Because of the default recipe executing `tn` will not give you help. For this you will need to explicitely run `tn -h`.
 
