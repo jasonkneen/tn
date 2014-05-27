@@ -141,7 +141,7 @@ The user recipes are stored in `~/.tn.json` and override built-in recipes sharin
 
 ```
 tn save ios --target android # overrides the built-in 'ios'
-rn rename ios confusing      # 'ios' will point to built-in again
+tn rename ios confusing      # 'ios' will point to built-in again
 tn remove confusing
 ```
 
