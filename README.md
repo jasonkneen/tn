@@ -145,6 +145,9 @@ tn rename ios confusing      # 'ios' will point to built-in again
 tn remove confusing
 ```
 
+### Skip TiNy
+Add `skip` as one of the arguments to have to skip TiNy and just have `ti build` continue as it were.
+
 #### Verbose mode
 If you want to know exactly what TiNy is doing, e.g. when you're composing a new recipe, you can enable verbose-mode by passing `verbose` as one of the arguments. Apart from showing how TiNy cooks the end-result, it will also pause before actually executing it, asking if you want to save it as a recipe, just run it or exit.
 

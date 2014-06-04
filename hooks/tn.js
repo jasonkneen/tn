@@ -16,7 +16,9 @@ exports.init = function(logger, config, cli, nodeappc) {
     require('../lib/cook').cook(args, cfg, function(cooked) {
 
       // replace input args with cooked ones
-      cli.argv['$_'] = cooked;
+      if (cooked) {
+        cli.argv['$_'] = cooked;
+      }
 
       // continue "ti build"
       callback(null, data);
