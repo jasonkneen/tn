@@ -145,6 +145,14 @@ tn rename ios confusing      # 'ios' will point to built-in again
 tn remove confusing
 ```
 
+Project recipes override both user and built-in recipes. The are stored in `current_dir/tn.json` and can be edited with the `-p` flag
+
+```
+tn save -p ios --target android # overrides the built-in and if exists user 'ios'
+tn rename -p ios confusing      # 'ios' will point to built-in or if exists user again
+tn remove -p confusing
+```
+
 ### Skip TiNy
 Add `skip` as one of the arguments to have to skip TiNy and just have `ti build` continue as it were.
 

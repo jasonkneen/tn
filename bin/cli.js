@@ -37,30 +37,41 @@ if (args[0] !== '-h' && args[0] !== '--help') {
   else if (cmd === 'save') {
     displayBanner();
 
-    recipes.save(args[1], args.slice(2));
+    if (args[1] == '-p') {
+      recipes.save(args[2], args.slice(3), 'project');
+    } else {
+      recipes.save(args[1], args.slice(2));
+    }
   }
 
   // rename
   else if (cmd === 'rename') {
     displayBanner();
 
-    recipes.rename(args[1], args[2]);
+    if (args[1] == '-p') {
+      recipes.rename(args[2], args[3], 'project');
+    } else {
+      recipes.rename(args[1], args[2]);
+    }
   }
 
   // remove
   else if (cmd === 'remove') {
     displayBanner();
 
-    recipes.remove(args[1]);
+    if (args[1] == '-p') {
+      recipes.remove(args[2], 'project');
+    } else {
+      recipes.remove(args[1]);
+    }
   }
 
   // reset
   else if (cmd === 'reset') {
     displayBanner();
 
-    recipes.reset();
+    recipes.reset(args[1] == '-p' ? 'project' : '');
   }
-
   // install
   else if (cmd === 'install') {
     displayBanner(false);
@@ -97,20 +108,20 @@ else {
 
   console.log('Commands:');
   console.log();
-  console.log('  *'.cyan + '\t\t\t' + 'executes `ti build *` to save you 6 more keystrokes!');
+  console.log('  *'.cyan + '\t\t\t\t' + 'executes `ti build *` to save you 6 more keystrokes!');
   console.log();
-  console.log('  list'.cyan + '\t\t\t' + 'lists all recipes in the book');
-  console.log('  default <name>/*'.cyan + '\t' + 'sets a recipe (name) to always start out with (default: ios)');
-  console.log('  save <name> *'.cyan + '\t\t' + 'save a recipe, possibly overriding a built-in');
-  console.log('  rename <old> <new>'.cyan + '\t' + 'renames a recipe');
-  console.log('  remove <name>'.cyan + '\t\t' + 'removes a recipe, possibly restoring an overridden built-in');
-  console.log('  reset'.cyan + '\t\t\t' + 'removes all custom recipes and default, restoring the built-in');
+  console.log('  list'.cyan + '\t\t\t\t' + 'lists all recipes in the book');
+  console.log('  default <name>/*'.cyan + '\t\t' + 'sets a recipe (name) to always start out with (default: ios)');
+  console.log('  save [-p] <name> *'.cyan + '\t\t' + 'save a recipe, possibly overriding a built-in. Optional project parameter edits tn.json in current dir.');
+  console.log('  rename [-p] <old> <new>'.cyan + '\t' + 'renames a recipe.');
+  console.log('  remove [-p] <name>'.cyan + '\t\t' + 'removes a recipe, possibly restoring an overridden built-in');
+  console.log('  reset'.cyan + '\t\t\t\t' + 'removes all custom recipes and default, restoring the built-in');
   console.log();
-  console.log('  install'.cyan + '\t\t' + 'installs the Titanium CLI hook');
-  console.log('  uninstall'.cyan + '\t\t' + 'uninstalls the Titanium CLI hook');
+  console.log('  install'.cyan + '\t\t\t' + 'installs the Titanium CLI hook');
+  console.log('  uninstall'.cyan + '\t\t\t' + 'uninstalls the Titanium CLI hook');
   console.log();
-  console.log('  -h, --help'.cyan + '\t\t' + 'displays help');
-  console.log('  -v, --version'.cyan + '\t\t' + 'displays the current version');
+  console.log('  -h, --help'.cyan + '\t\t\t' + 'displays help');
+  console.log('  -v, --version'.cyan + '\t\t\t' + 'displays the current version');
   console.log();
 }
 
