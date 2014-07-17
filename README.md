@@ -143,14 +143,17 @@ The user recipes are stored in `~/.tn.json` and override built-in recipes sharin
 tn save ios --target android # overrides the built-in 'ios'
 tn rename ios confusing      # 'ios' will point to built-in again
 tn remove confusing
+tn reset                     # deletes the ~/.tn.json file
 ```
 
-Project recipes override both user and built-in recipes. The are stored in `current_dir/tn.json` and can be edited with the `-p` flag
+#### Project recipes
+Project recipes override both user and built-in recipes. The are stored in the current working directory in a file called `tn.json`. To edit this file instead of the global user file add `project` before the `save`, `rename`, `remove` and `reset` commands:
 
 ```
-tn save -p ios --target android # overrides the built-in and if exists user 'ios'
-tn rename -p ios confusing      # 'ios' will point to built-in or if exists user again
-tn remove -p confusing
+tn project save ios --target android # overrides the built-in and if exists user 'ios'
+tn project rename ios confusing      # 'ios' will point to built-in or if exists user again
+tn project remove confusing
+tn project reset                     # deletes the tn.json file
 ```
 
 ### Skip TiNy

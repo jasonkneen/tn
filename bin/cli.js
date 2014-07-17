@@ -10,67 +10,63 @@ var child_process = require('child_process'),
 var args = process.argv.slice(2);
 var args_ln = args.length;
 
-if (args[0] !== '-h' && args[0] !== '--help') {
-  var cmd = args[0];
+if (args[0] !== '-h' && args[0] !== '--help' && args[0] !== 'help') {
+  var cmd = args.shift();
 
   // version
-  if (cmd === '-v' || cmd === '--version') {
+  if (cmd === '-v' || cmd === '--version' || args[0] === 'version') {
     console.log(package.version);
     return;
   }
 
+  var target;
+
+  // project
+  if (cmd === 'project') {
+    cmd = args.shift();
+    target = 'project';
+  }
+
   // list
-  if (cmd === 'list') {
+  if (cmd === 'list' || cmd === 'recipes') {
     displayBanner();
 
-    recipes.list(args[1] === 'readme');
+    recipes.list(args[0] === 'readme');
   }
 
   // default
   else if (cmd === 'default') {
     displayBanner();
 
-    recipes.setDefault(args.slice(1));
+    recipes.setDefault(args);
   }
 
   // set
   else if (cmd === 'save') {
     displayBanner();
 
-    if (args[1] == '-p') {
-      recipes.save(args[2], args.slice(3), 'project');
-    } else {
-      recipes.save(args[1], args.slice(2));
-    }
+    recipes.save(args.shift(), args, target);
   }
 
   // rename
   else if (cmd === 'rename') {
     displayBanner();
 
-    if (args[1] == '-p') {
-      recipes.rename(args[2], args[3], 'project');
-    } else {
-      recipes.rename(args[1], args[2]);
-    }
+    recipes.rename(args[0], args[1], target);
   }
 
   // remove
   else if (cmd === 'remove') {
     displayBanner();
 
-    if (args[1] == '-p') {
-      recipes.remove(args[2], 'project');
-    } else {
-      recipes.remove(args[1]);
-    }
+    recipes.remove(args[0], target);
   }
 
   // reset
   else if (cmd === 'reset') {
     displayBanner();
 
-    recipes.reset(args[1] == '-p' ? 'project' : '');
+    recipes.reset(target);
   }
   // install
   else if (cmd === 'install') {
@@ -110,18 +106,21 @@ else {
   console.log();
   console.log('  *'.cyan + '\t\t\t\t' + 'executes `ti build *` to save you 6 more keystrokes!');
   console.log();
-  console.log('  list'.cyan + '\t\t\t\t' + 'lists all recipes in the book');
-  console.log('  default <name>/*'.cyan + '\t\t' + 'sets a recipe (name) to always start out with (default: ios)');
-  console.log('  save [-p] <name> *'.cyan + '\t\t' + 'save a recipe, possibly overriding a built-in. Optional project parameter edits tn.json in current dir.');
-  console.log('  rename [-p] <old> <new>'.cyan + '\t' + 'renames a recipe.');
-  console.log('  remove [-p] <name>'.cyan + '\t\t' + 'removes a recipe, possibly restoring an overridden built-in');
-  console.log('  reset'.cyan + '\t\t\t\t' + 'removes all custom recipes and default, restoring the built-in');
+  console.log('  list, recipes'.cyan + '\t\t\t' + 'lists all recipes in the book');
+  console.log();
+  console.log('  default *'.cyan + '\t\t\t' + 'sets a recipe (name) to always start out with (default: ios)');
+  console.log();
+  console.log('  [project] save <name> *'.cyan + '\t' + 'save a recipe, possibly overriding a built-in.');
+  console.log('  [project] rename <old> <new>'.cyan + '\t' + 'renames a recipe.');
+  console.log('  [project] remove <name>'.cyan + '\t' + 'removes a recipe, possibly restoring an overridden built-in');
+  console.log('  [project] reset'.cyan + '\t\t' + 'removes all custom recipes and default, restoring the built-in');
+  console.log('  \t\t\t\tAdd \'project\' before these commands to use tn.json in current dir.');
   console.log();
   console.log('  install'.cyan + '\t\t\t' + 'installs the Titanium CLI hook');
   console.log('  uninstall'.cyan + '\t\t\t' + 'uninstalls the Titanium CLI hook');
   console.log();
-  console.log('  -h, --help'.cyan + '\t\t\t' + 'displays help');
-  console.log('  -v, --version'.cyan + '\t\t\t' + 'displays the current version');
+  console.log('  -h, --help, help'.cyan + '\t\t' + 'displays help');
+  console.log('  -v, --version, version'.cyan + '\t' + 'displays the current version');
   console.log();
 }
 
