@@ -86,7 +86,7 @@ if (args[0] !== '-h' && args[0] !== '--help' && args[0] !== 'help') {
   else {
 
     // prepend build
-    args.unshift('build');
+    args.unshift('build',cmd);
 
     // execute ti
     child_process.spawn('ti', args, {
