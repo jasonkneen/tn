@@ -1,7 +1,4 @@
 {
-	"create-test": ["create", "--type", "app", "--name", "%s", "--id", "test.%s", "--workspace-dir", "."],
-	"run": ["--ios"],
-
 	"android": ["--platform", "android"],
 	"blackberry": ["--platform", "blackberry"],
 	"ios": ["--platform", "ios"],
@@ -33,9 +30,9 @@
 
 	"desktop": ["-output-dir", "~/Desktop"],
 
-	"ip7": ["--sim-version", "7.0", "--sim-type", "iphone"],
+	"ip7": ["--sim-version", "7.1", "--sim-type", "iphone"],
 	"ip6": ["--sim-version", "6.1", "--sim-type", "iphone"],
-	"ipad7": ["--sim-version", "7.0", "--sim-type", "ipad"],
+	"ipad7": ["--sim-version", "7.1", "--sim-type", "ipad"],
 	"ipad6": ["--sim-version", "6.1", "--sim-type", "ipad"],
 
 	"key-password": ["--key-password", "%s", "--key-password", "%s", "--platform", "android"],
