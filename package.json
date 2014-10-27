@@ -17,15 +17,17 @@
     "alloy",
     "cli"
   ],
-  "version": "1.2.2",
+  "version": "2.0.0",
   "author": {
     "name": "Fokke Zandbergen",
     "email": "mail@fokkezb.nl"
   },
-  "maintainers": [{
-    "name": "Fokke Zandbergen",
-    "email": "mail@fokkezb.nl"
-  }],
+  "maintainers": [
+    {
+      "name": "Fokke Zandbergen",
+      "email": "mail@fokkezb.nl"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/fokkezb/tn.git"
