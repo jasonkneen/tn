@@ -2,7 +2,7 @@
   "about": {
     "name": "TiNy Smart CLI for Titanium",
     "author": "Fokke Zandbergen",
-    "copyright": "Copyright (c) 2013, Fokke Zandbergen.  All Rights Reserved.",
+    "copyright": "Copyright (c) 2013-2014, Fokke Zandbergen.  All Rights Reserved.",
     "id": "nl.fokkezb.tn"
   },
   "name": "tn",
@@ -22,12 +22,10 @@
     "name": "Fokke Zandbergen",
     "email": "mail@fokkezb.nl"
   },
-  "maintainers": [
-    {
-      "name": "Fokke Zandbergen",
-      "email": "mail@fokkezb.nl"
-    }
-  ],
+  "maintainers": [{
+    "name": "Fokke Zandbergen",
+    "email": "mail@fokkezb.nl"
+  }],
   "repository": {
     "type": "git",
     "url": "git://github.com/fokkezb/tn.git"
@@ -36,11 +34,13 @@
   "dependencies": {
     "colors": "^0.6.0-1",
     "fields": "^0.1.12",
+    "minimist": "^1.1.0",
     "underscore": "^1.5.2",
-    "update-notifier": "^0.1.8"
+    "update-notifier": "^0.2.1"
   },
   "license": "Apache Public License v2",
   "bin": "./bin/cli.js",
+  "main": "./main.js",
   "scripts": {
     "postinstall": "tn install",
     "preuninstall": "tn uninstall"
