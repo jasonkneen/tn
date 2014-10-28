@@ -43,6 +43,26 @@ TiNy is a hook for the [Titanium CLI](http://docs.appcelerator.com/titanium/late
 	ti --ci "a great update"
 	```
 
+## Command aliases
+New since 2.0.0 are command aliasses for all of the Titanium CLI's commands. A nice bonus so you can run `ti i` instead of `ti info`. If `ti` is followed by an option or flag TiNy assumes the `build` command so that `ti b --ipad` can be just `ti --ipad`.
+
+alias|command
+-----|-------
+b|build
+cl|clean
+cf|config
+cr|create
+h|help
+i|info
+li|login
+lo|logout
+m|module
+pl|plugin
+pr|project
+sd|sdk
+su|setup
+st|status
+
 ## Recipes
 A recipe is simply a flag or option that stands for a group of other arguments, which may in turn include other recipes. There are built-in recipes, but you can also add your own or override built-ins.
 

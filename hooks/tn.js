@@ -1,9 +1,9 @@
 'use strict';
 
-var _ = require('underscore'),
-  updateNotifier = require('update-notifier');
+var _ = require('underscore');
 
 var pkg = require('../package.json'),
+  update = require('../lib/update'),
   kitchen = require('../lib/kitchen');
 
 exports.cliVersion = '>=3.2';
@@ -26,11 +26,11 @@ exports.init = function(logger, config, cli, nodeappc) { // jshint unused:false
 
   // only when doing a build check for updates
   if (tray.dinner[0] === 'build') {
-    updateNotifier({
+    update({
       packageName: pkg.name,
       packageVersion: pkg.version,
       updateCheckInterval: 1
-    }).notify();
+    });
   }
 
   // replace args from command on with dinner

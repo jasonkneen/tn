@@ -38,7 +38,7 @@
     "fields": "^0.1.12",
     "minimist": "^1.1.0",
     "underscore": "^1.5.2",
-    "update-notifier": "^0.2.1"
+    "update-notifier": "^0.2.2"
   },
   "license": "Apache Public License v2",
   "bin": "./bin/cli.js",

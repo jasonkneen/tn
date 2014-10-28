@@ -2,8 +2,8 @@
 
 'use strict';
 
-var updateNotifier = require('update-notifier'),
-  pkg = require('../package.json'),
+var pkg = require('../package.json'),
+  update = require('../lib/update'),
   recipes = require('../lib/recipes'),
   setup = require('../lib/setup');
 
@@ -113,13 +113,13 @@ function displayHelp() {
   console.log();
 }
 
-function displayBanner(update) {
+function displayBanner(doUpdate) {
 
-  if (update !== false) {
-    updateNotifier({
+  if (doUpdate !== false) {
+    update({
       packageName: pkg.name,
       packageVersion: pkg.version
-    }).notify();
+    });
   }
 
   // display banner
