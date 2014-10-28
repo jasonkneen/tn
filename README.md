@@ -159,11 +159,15 @@ tn project remove confusing          # deletes the confusing custom recipe
 tn project reset                     # deletes the tn.json file
 ```
 
+## Hook options
+
 ### Skip TiNy
 Add `--skip` to skip TiNy's magic.
 
-#### Verbose mode
+### Verbose mode
 If you want to know exactly what TiNy is doing, e.g. when you're composing a new recipe, you can enable verbose-mode by passing `--verbose` as one of the arguments. Apart from showing how TiNy cooks the end-result, it will also pause before actually executing it, asking if you want to save it as a recipe, just run it or exit.
+
+## Other features
 
 ### Resolving aliases
 TiNy will convert abbreviations (`-T`) to their full names (`--target`). It needs to this for the next feature.
@@ -171,7 +175,7 @@ TiNy will convert abbreviations (`-T`) to their full names (`--target`). It need
 ### Resolving duplicates
 TiNy will resolve any duplicate options and flags in order of appearance. 
 
-### Install & Uninstall
+## Manual Install & Uninstall
 Two other commands only briefly mentioned in the Quick Start are for installing (`tn install`) and uninstalling (`tn uninstall`) TiNy as a hook for the Titanium CLI. These are executed automatically when you install or uninstall TiNy over NPM.
 
 ## Roadmap
