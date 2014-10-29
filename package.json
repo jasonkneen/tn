@@ -44,8 +44,8 @@
   "bin": "./bin/cli.js",
   "main": "./main.js",
   "scripts": {
-    "postinstall": "tn install",
-    "preuninstall": "tn uninstall"
+    "postinstall": "bin/cli.js install",
+    "preuninstall": "bin/cli.js uninstall"
   },
   "directories": {
     "lib": "./lib"

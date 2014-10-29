@@ -23,8 +23,13 @@ TiNy is a hook for the [Titanium CLI](http://docs.appcelerator.com/titanium/late
 3. Build a project to the iPad simulator using the built-in default `ipad` recipe:
 
 	```
+	ti build --ipad
+	ti b --ipad
 	ti --ipad
+	ti ipad
 	```
+
+	**NOTE:** All of the above do the same. The first 3 use the recipe as a flag/option. The second one uses one of the command aliases. TiNy will assume the build command if the first argument is a flag/option like the 3rd example. The last one shows you can also use a recipe as a command.
 	
 4. Compose a custom recipes mixing others (`--ah`) and an option value (`%s`):
 
@@ -40,7 +45,7 @@ TiNy is a hook for the [Titanium CLI](http://docs.appcelerator.com/titanium/late
 5. Ship it:
 	
 	```
-	ti --ci "a great update"
+	ti ci "a great update"
 	```
 
 ## Command aliases
@@ -159,6 +164,9 @@ tn project remove confusing          # deletes the confusing custom recipe
 tn project reset                     # deletes the tn.json file
 ```
 
+#### Command recipes
+Any recipe can be used as a command as well. Like the Quick Start shows you can do `ti ipad` instead of `ti --ipad`. If the first argument is a valid recipe name TiNy will turn it into a flag/option and continue as normal.
+
 ## Hook options
 
 ### Skip TiNy
@@ -183,9 +191,10 @@ Two other commands only briefly mentioned in the Quick Start are for installing 
 * Add more built-in recipes.
 
 ## Changelog
-* 2.x: Rewrite using traditional flags/options format for recipes.
-* 1.x: Rewrite dropping support for `T=emulator` and `T:emulator` notations.
-* 0.x: Original version.
+* 2.1.0: Re-introduces command recipes (and fixes `postinstall` for `npm link`). 
+* 2.0.0: Rewrite using traditional flags/options format for recipes.
+* 1.0.0: Rewrite dropping support for `T=emulator` and `T:emulator` notations.
+* 0.1.0: Original version.
 
 ## Bugs
 When you find issues, please [report](https://github.com/FokkeZB/gittio/issues) them. Be sure to include *all* of the output from the gittio command that didn't work as expected. Also please check if there's not already in issue for it.
