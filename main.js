@@ -5,5 +5,5 @@ exports.parse = function(args) {
 
   tray = kitchen.cook(args);
 
-  return tray.dinner;
+  return tray ? tray.dinner : args;
 };
