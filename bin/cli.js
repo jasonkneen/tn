@@ -67,6 +67,14 @@ if (args[0] !== '-h' && args[0] !== '--help' && args[0] !== 'help') {
 
     recipes.reset(target);
   }
+
+  // reset
+  else if (cmd === 'generate') {
+    displayBanner();
+
+    setup.generate();
+  }  
+
   // install
   else if (cmd === 'install') {
     displayBanner(false);
@@ -99,11 +107,14 @@ function displayHelp() {
   console.log();
   console.log('  list, recipes'.cyan + '\t\t\t' + 'lists all recipes in the book');
   console.log();
+  console.log('  Add ' + 'project'.yellow + ' before the next commands to use ' + 'tn.json'.yellow + ' in current dir.');
+  console.log();
   console.log('  [project] save <name> *'.cyan + '\t' + 'save a recipe, possibly overriding a built-in.');
   console.log('  [project] rename <old> <new>'.cyan + '\t' + 'renames a recipe.');
   console.log('  [project] remove <name>'.cyan + '\t' + 'removes a recipe, possibly restoring an overridden built-in');
   console.log('  [project] reset'.cyan + '\t\t' + 'removes all custom recipes, restoring the built-in');
-  console.log('  \t\t\t\tAdd \'project\' before these commands to use tn.json in current dir.');
+  console.log();
+  console.log('  generate'.cyan + '\t\t\t' + 'generates simulators/device user-recipes (' + 'ti iphone6plus'.yellow + ')');
   console.log();
   console.log('  install'.cyan + '\t\t\t' + 'installs the Titanium CLI hook');
   console.log('  uninstall'.cyan + '\t\t\t' + 'uninstalls the Titanium CLI hook');

@@ -154,6 +154,17 @@ tn remove confusing          # deletes the confusing custom recipe
 tn reset                     # deletes the ~/.tn.json file
 ```
 
+##### Generating Device/Emulator/Simulator recipes
+
+You can generate user recipes for all connected devices, emulators and simulators by running `tn generate`. This will automatically create new recipes like:
+
+```
+  iphone-5s: --platform ios --target simulator --device-id 2592EB13-534C-4E05-8D58-110D0261BDE3
+  iphone-5s-ios71: --platform ios --target simulator --device-id 2AE900F4-4349-4AD9-9AC4-CFD881BD5877
+  iphone-fokke: --platform ios --target device --device-id daf492502fffe744842280370ed6dcc740eda657
+  samsung-galaxy-s4-43-api-18-1080x1920: --platform android --target emulator --device-id "Samsung Galaxy S4 - 4.3 - API 18 - 1080x1920"
+```
+
 #### Project recipes
 Project recipes override both user and built-in recipes. The are stored in the current working directory in a file called `tn.json`. To edit this file instead of the global user file add `project` before the `save`, `rename`, `remove` and `reset` commands:
 
@@ -191,6 +202,7 @@ Two other commands only briefly mentioned in the Quick Start are for installing 
 * Add more built-in recipes.
 
 ## Changelog
+* 2.2.0: Adds generating device/emulator/simulator recipes (`tn generate`).
 * 2.1.0: Re-introduces command recipes (and fixes `postinstall` for `npm link`). 
 * 2.0.0: Rewrite using traditional flags/options format for recipes.
 * 1.0.0: Rewrite dropping support for `T=emulator` and `T:emulator` notations.
