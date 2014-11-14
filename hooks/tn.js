@@ -36,6 +36,9 @@ exports.init = function(logger, config, cli, nodeappc) { // jshint unused:false
   // replace args from command on with dinner
   process.argv = _.union(process.argv.slice(0, 2), tray.dinner);
 
+  // prevent edge case (TiShadow appify) from triggering TiNy again
+  process.argv.push('--skip');
+
   // tray includes recipe
   if (tray.recipe) {
 
