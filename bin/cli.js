@@ -25,15 +25,15 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
 }
 
 // build/run
-else if (cmd === 'run' || cmd === 'build') {
+else if (cmd === 'run' || cmd === 'build' || cmd === 'r' || cmd === 'b') {
 
   var tray = kitchen.cook(args);
 
   args = tray ? tray.dinner : args;
+  
+  var bin = (cmd === 'run' || cmd === 'r') ? 'appc' : 'ti';
 
-  args.unshift(cmd);
-
-  var bin = (cmd === 'run') ? 'appc' : 'ti';
+  args.unshift((bin === 'appc') ? 'run' : 'build');
 
   // Show what TiNy made (only for build and create, not to mess with JSON output)
   console.log('TiNy'.cyan.bold + ' cooked: ' + (bin + ' ' + utils.join(args)).yellow + '\n');
@@ -130,8 +130,8 @@ function displayHelp() {
 
   console.log('Commands:');
   console.log();
-  console.log('  run *'.cyan + '\t\t\t\t' + 'cook recipes for ' + 'appc run'.yellow + '.');
-  console.log('  build *'.cyan + '\t\t\t' + 'cook recipes for ' + 'ti build'.yellow + '.');
+  console.log('  r(un) *'.cyan + '\t\t\t' + 'cook recipes for ' + 'appc run'.yellow + '.');
+  console.log('  b(uild) *'.cyan + '\t\t\t' + 'cook recipes for ' + 'ti build'.yellow + '.');
   console.log();
   console.log('  list, recipes'.cyan + '\t\t\t' + 'lists all recipes in the book.');
   console.log();

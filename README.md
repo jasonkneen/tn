@@ -23,14 +23,14 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
 3. Build a project to the iPad simulator using the built-in default `ipad` recipe:
 
 	```
-	ti run --ipad
-	ti run ipad --another-recipe
+	ti r --ipad
+	ti r ipad --another-recipe
 	```
 
 	**NOTES**
 	
 	* The first recipe does not need to start with `--`.
-	* Replace `run` with `build` to use `ti build` instead of `appc run`.
+	* Replace `r` with `b` to use `ti build` instead of `appc run`.
 	
 4. Compose a custom recipes mixing others (`--ah`) and an option value (`%s`):
 
@@ -46,7 +46,7 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
 5. Ship it:
 	
 	```
-	ti run ci "a great update"
+	ti r ci "a great update"
 	```
 
 ## Recipes
@@ -64,7 +64,7 @@ These are the current built-in recipes. If you have handy custom recipes you thi
 
 **NOTES:**
 
-* Don't forget that since 2.0 you need `ti run [name] --[name]`.
+* Don't forget that since 2.0 you need `ti r [name] --[name]`.
 * Only the first recipe does not need to start with `--`.
 
 |name|recipe|
@@ -160,7 +160,7 @@ tn project reset                     # deletes the tn.json file
 ```
 
 #### Command recipes
-Any recipe can be used as a command as well. Like the Quick Start shows you can do `ti run ipad` instead of `ti run --ipad`. If the first argument is a valid recipe name TiNy will turn it into a flag/option and continue as normal.
+Any recipe can be used as a command as well. Like the Quick Start shows you can do `ti r ipad` instead of `ti r --ipad`. If the first argument is a valid recipe name TiNy will turn it into a flag/option and continue as normal.
 
 ### Verbose mode
 If you want to know exactly what TiNy is doing, e.g. when you're composing a new recipe, you can enable verbose-mode by passing `--verbose` as one of the arguments. Apart from showing how TiNy cooks the end-result, it will also pause before actually executing it, asking if you want to save it as a recipe, just run it or exit.
