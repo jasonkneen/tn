@@ -17,7 +17,7 @@
     "alloy",
     "cli"
   ],
-  "version": "2.3.0",
+  "version": "3.0.0",
   "author": {
     "name": "Fokke Zandbergen",
     "email": "mail@fokkezb.nl"
@@ -44,8 +44,7 @@
   "bin": "./bin/cli.js",
   "main": "./main.js",
   "scripts": {
-    "postinstall": "node bin/cli.js install",
-    "preuninstall": "node bin/cli.js uninstall"
+    "postinstall": "node bin/cli.js uninstall"
   },
   "directories": {
     "lib": "./lib"

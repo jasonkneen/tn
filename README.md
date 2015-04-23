@@ -1,8 +1,8 @@
 # TiNy CLI [![Titanium](http://www-static.appcelerator.com/badges/titanium-git-badge-sq.png)](http://www.appcelerator.com/titanium/)
 
-TiNy is a hook for the [Titanium CLI](http://docs.appcelerator.com/titanium/latest/#!/guide/Titanium_Command-Line_Interface_Reference)'s `build` command that allows you to do the same using less keystrokes. It has built-in recipes, but also allows you to compose and save your own recipes.
+TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platform/latest/#!/guide/Appcelerator_Command-Line_Interface_Reference)'s `run` and [Titanium CLI](http://docs.appcelerator.com/platform/latest/#!/guide/Titanium_Command-Line_Interface_Reference)'s `build` command that allows you to do the same using less keystrokes. It has built-in recipes, but also allows you to compose and save your own recipes.
 
-> **WARNING:** Version 2.0 is a complete rewrite with lots of breaking changes!
+> **WARNING:** Version 3.x is once again a wrapper like 1.x and no longer a hook as 2.x
 
 ## Quick Start [![npm](http://img.shields.io/npm/v/tn.png)](https://www.npmjs.org/package/tn)
 
@@ -14,22 +14,23 @@ TiNy is a hook for the [Titanium CLI](http://docs.appcelerator.com/titanium/late
     
     You need `--unsafe-perm` to allow TiNy to hook into the Titanium CLI.
     
-2. If for some reason hooking into the Titanium CLI still failed, use the TiNY CLI for this:
+2. If for some reason uninstalling version 2.x Titanium CLI failed, use the TiNY CLI:
 
 	```
-	tn install
+	tn uninstall
 	```
 
 3. Build a project to the iPad simulator using the built-in default `ipad` recipe:
 
 	```
-	ti build --ipad
-	ti b --ipad
-	ti --ipad
-	ti ipad
+	ti run --ipad
+	ti run ipad --another-recipe
 	```
 
-	**NOTE:** All of the above do the same. The first 3 use the recipe as a flag/option. The second one uses one of the command aliases. TiNy will assume the build command if the first argument is a flag/option like the 3rd example. The last one shows you can also use a recipe as a command.
+	**NOTES**
+	
+	* The first recipe does not need to start with `--`.
+	* Replace `run` with `build` to use `ti build` instead of `appc run`.
 	
 4. Compose a custom recipes mixing others (`--ah`) and an option value (`%s`):
 
@@ -45,28 +46,8 @@ TiNy is a hook for the [Titanium CLI](http://docs.appcelerator.com/titanium/late
 5. Ship it:
 	
 	```
-	ti ci "a great update"
+	ti run ci "a great update"
 	```
-
-## Command aliases
-New since 2.0.0 are command aliasses for all of the Titanium CLI's commands. A nice bonus so you can run `ti i` instead of `ti info`. If `ti` is followed by an option or flag TiNy assumes the `build` command so that `ti b --ipad` can be just `ti --ipad`.
-
-alias|command
------|-------
-b|build
-cl|clean
-cf|config
-cr|create
-h|help
-i|info
-li|login
-lo|logout
-m|module
-pl|plugin
-pr|project
-sd|sdk
-su|setup
-st|status
 
 ## Recipes
 A recipe is simply a flag or option that stands for a group of other arguments, which may in turn include other recipes. There are built-in recipes, but you can also add your own or override built-ins.
@@ -81,7 +62,10 @@ Most recipes are flags, but a receipe can also be an option. If a recipe is foll
 ### Built-in recipes
 These are the current built-in recipes. If you have handy custom recipes you think everybody should have, please send a PR or open a ticket to have them added to the built-ins.
 
-* **NOTE:** Don't forget that since 2.0 you need `ti --[name]`.
+**NOTES:**
+
+* Don't forget that since 2.0 you need `ti run [name] --[name]`.
+* Only the first recipe does not need to start with `--`.
 
 |name|recipe|
 |----|------|
@@ -176,12 +160,7 @@ tn project reset                     # deletes the tn.json file
 ```
 
 #### Command recipes
-Any recipe can be used as a command as well. Like the Quick Start shows you can do `ti ipad` instead of `ti --ipad`. If the first argument is a valid recipe name TiNy will turn it into a flag/option and continue as normal.
-
-## Hook options
-
-### Skip TiNy
-Add `--skip` to skip TiNy's magic.
+Any recipe can be used as a command as well. Like the Quick Start shows you can do `ti run ipad` instead of `ti run --ipad`. If the first argument is a valid recipe name TiNy will turn it into a flag/option and continue as normal.
 
 ### Verbose mode
 If you want to know exactly what TiNy is doing, e.g. when you're composing a new recipe, you can enable verbose-mode by passing `--verbose` as one of the arguments. Apart from showing how TiNy cooks the end-result, it will also pause before actually executing it, asking if you want to save it as a recipe, just run it or exit.
@@ -194,14 +173,12 @@ TiNy will convert abbreviations (`-T`) to their full names (`--target`). It need
 ### Resolving duplicates
 TiNy will resolve any duplicate options and flags in order of appearance. 
 
-## Manual Install & Uninstall
-Two other commands only briefly mentioned in the Quick Start are for installing (`tn install`) and uninstalling (`tn uninstall`) TiNy as a hook for the Titanium CLI. These are executed automatically when you install or uninstall TiNy over NPM.
-
 ## Roadmap
 * Restore some of the smarts lost in the 2.0 rewrite.
 * Add more built-in recipes.
 
 ## Changelog
+* 3.0.0: Reverted TiNy from hook back to wrapper, supporting both `ti build` and `appc run`.
 * 2.3.0: Fixes for TiNy not to mess when run via Studio or AppC CLI
 * 2.2.0: Adds generating device/emulator/simulator recipes (`tn generate`).
 * 2.1.0: Re-introduces command recipes (and fixes `postinstall` for `npm link`). 
@@ -215,7 +192,7 @@ When you find issues, please [report](https://github.com/FokkeZB/gittio/issues) 
 ## License
 
 <pre>
-Copyright 2013-2014 Fokke Zandbergen
+Copyright 2013-2015 Fokke Zandbergen
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
