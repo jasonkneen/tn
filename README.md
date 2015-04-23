@@ -202,6 +202,7 @@ Two other commands only briefly mentioned in the Quick Start are for installing 
 * Add more built-in recipes.
 
 ## Changelog
+* 2.3.0: Fixes for TiNy not to mess when run via Studio or AppC CLI
 * 2.2.0: Adds generating device/emulator/simulator recipes (`tn generate`).
 * 2.1.0: Re-introduces command recipes (and fixes `postinstall` for `npm link`). 
 * 2.0.0: Rewrite using traditional flags/options format for recipes.
