@@ -12,7 +12,7 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
     sudo npm install -g tn --unsafe-perm
     ```
     
-    You need `--unsafe-perm` to allow TiNy to hook into the Titanium CLI.
+    You need `--unsafe-perm` to allow TiNy to do step 2 for you.
     
 2. If for some reason uninstalling version 2.x Titanium CLI failed, use the TiNY CLI:
 

@@ -130,7 +130,8 @@ function displayHelp() {
 
   console.log('Commands:');
   console.log();
-  console.log('  *'.cyan + '\t\t\t\t' + 'anything other then commands listed will be cooked for ' + 'ti'.yellow + '.');
+  console.log('  run *'.cyan + '\t\t\t\t' + 'cook recipes for ' + 'appc run'.yellow + '.');
+  console.log('  build *'.cyan + '\t\t\t' + 'cook recipes for ' + 'ti build'.yellow + '.');
   console.log();
   console.log('  list, recipes'.cyan + '\t\t\t' + 'lists all recipes in the book.');
   console.log();
