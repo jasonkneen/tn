@@ -1,3 +1,4 @@
 node_modules
 .DS_Store
 TODO.txt
+npm-debug.log
