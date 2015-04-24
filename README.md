@@ -9,29 +9,34 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
 1. Install [TiNy](http://npmjs.org/package/tn) via [NPM](http://npmjs.org):
 
     ```
-    sudo npm install -g tn --unsafe-perm
+    [sudo] npm install -g tn --unsafe-perm
     ```
     
-    You need `--unsafe-perm` to allow TiNy to do step 2 for you.
+    * You probably need `sudo` on Mac OS.
+    * You need `--unsafe-perm` to allow TiNy to uninstall the 2.x hook if needed.
     
-2. If for some reason uninstalling version 2.x Titanium CLI failed, use the TiNY CLI:
+2. If for some reason uninstalling the 2.x hook failed, use the TiNY CLI to do so:
 
 	```
 	tn uninstall
 	```
 
-3. Build a project to the iPad simulator using the built-in default `ipad` recipe:
+3. Generate recipes for all connected simulators, emulators and devices:
 
 	```
-	ti r --ipad
-	ti r ipad --another-recipe
+	tn generate
 	```
 
-	**NOTES**
+4. Build a project for iPhone 6 Simulator using the generated recipe:
+
+	```
+	ti r iphone-6
+	ti r iphone-6 --another-recipe
+	```
 	
 	* Replace `r` with `b` to use `ti build` instead of `appc run`.
 	* Use `run` or `build` if you feel like typing more.
-	* The first recipe after `r` or `b` does not need to start with `--`.
+	* Only the first recipe after `r` or `b` does not need to start with `--`.
 	
 4. Compose a custom recipes mixing others (`--ah`) and an option value (`%s`):
 
@@ -63,9 +68,7 @@ Most recipes are flags, but a receipe can also be an option. If a recipe is foll
 ### Built-in recipes
 These are the current built-in recipes. If you have handy custom recipes you think everybody should have, please send a PR or open a ticket to have them added to the built-ins.
 
-**NOTES:**
-
-* Don't forget that since 2.0 you need `ti r [name] --[name]`.
+* Don't forget that since 2.0 recipes are options and stary with `--`.
 * Only the first recipe does not need to start with `--`.
 
 |name|recipe|
