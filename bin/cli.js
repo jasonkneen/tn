@@ -3,7 +3,7 @@
 'use strict';
 
 var pkg = require('../package.json'),
-  update = require('../lib/update'),
+  updateNotifier = require('update-notifier'),
   recipes = require('../lib/recipes'),
   setup = require('../lib/setup'),
   utils = require('../lib/utils'),
@@ -155,7 +155,7 @@ function displayHelp() {
 function displayBanner(doUpdate) {
 
   if (doUpdate !== false) {
-    update({
+    updateNotifier({
       packageName: pkg.name,
       packageVersion: pkg.version
     });
@@ -163,6 +163,6 @@ function displayBanner(doUpdate) {
 
   // display banner
   console.log('TiNy'.cyan.bold + ', version ' + pkg.version);
-  console.log(pkg.about.copyright);
+  console.log('Copyright (c) 2013-2015, Fokke Zandbergen.  All Rights Reserved.');
   console.log();
 }

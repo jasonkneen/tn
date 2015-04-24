@@ -1,12 +1,6 @@
 {
-  "about": {
-    "name": "TiNy Smart CLI for Titanium",
-    "author": "Fokke Zandbergen",
-    "copyright": "Copyright (c) 2013-2014, Fokke Zandbergen.  All Rights Reserved.",
-    "id": "nl.fokkezb.tn"
-  },
   "name": "tn",
-  "description": "Titanium CLI hook that makes 'ti build' a lot smarter!",
+  "description": "Appcelerator & Titanium CLI wrapper to save you keystrokes.",
   "keywords": [
     "appcelerator",
     "titanium",
@@ -22,23 +16,20 @@
     "name": "Fokke Zandbergen",
     "email": "mail@fokkezb.nl"
   },
-  "maintainers": [
-    {
-      "name": "Fokke Zandbergen",
-      "email": "mail@fokkezb.nl"
-    }
-  ],
+  "maintainers": [{
+    "name": "Fokke Zandbergen",
+    "email": "mail@fokkezb.nl"
+  }],
   "repository": {
     "type": "git",
     "url": "git://github.com/fokkezb/tn.git"
   },
   "preferGlobal": true,
   "dependencies": {
-    "colors": "^0.6.0-1",
-    "fields": "^0.1.12",
-    "minimist": "^1.1.0",
-    "underscore": "^1.5.2",
-    "update-notifier": "^0.2.2"
+    "colors": "^1.0.3",
+    "fields": "^0.1.23",
+    "underscore": "^1.8.3",
+    "update-notifier": "^0.3.2"
   },
   "license": "Apache Public License v2",
   "bin": "./bin/cli.js",
@@ -53,8 +44,6 @@
     "node": ">=0.8"
   },
   "homepage": "http://fokkezb.nl/tag/tiny",
-  "readme": "",
-  "readmeFilename": "README.md",
   "bugs": {
     "url": "https://github.com/fokkezb/tn/issues"
   }

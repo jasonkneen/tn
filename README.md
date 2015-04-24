@@ -29,8 +29,9 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
 
 	**NOTES**
 	
-	* The first recipe does not need to start with `--`.
 	* Replace `r` with `b` to use `ti build` instead of `appc run`.
+	* Use `run` or `build` if you feel like typing more.
+	* The first recipe after `r` or `b` does not need to start with `--`.
 	
 4. Compose a custom recipes mixing others (`--ah`) and an option value (`%s`):
 
