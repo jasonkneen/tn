@@ -30,11 +30,12 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
 4. Build a project for iPhone 6 Simulator using the generated recipe:
 
 	```
-	ti r iphone-6
-	ti r iphone-6 --another-recipe
+	tn r iphone-6
+	tn r iphone-6 --another-recipe
 	```
 	
-	* Replace `r` with `b` to use `ti build` instead of `appc run`.
+	* Notice that since 3.0 is no longer a hook you need `tn r` or `tn b` - no more `ti`.
+	* Replace `r` with `b` to use `tn build` instead of `appc run`.
 	* Use `run` or `build` if you feel like typing more.
 	* Only the first recipe after `r` or `b` does not need to start with `--`.
 	
@@ -52,7 +53,7 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
 5. Ship it:
 	
 	```
-	ti r ci "a great update"
+	tn r ci "a great update"
 	```
 
 ## Recipes
@@ -164,7 +165,7 @@ tn project reset                     # deletes the tn.json file
 ```
 
 #### Command recipes
-Any recipe can be used as a command as well. Like the Quick Start shows you can do `ti r ipad` instead of `ti r --ipad`. If the first argument is a valid recipe name TiNy will turn it into a flag/option and continue as normal.
+Any recipe can be used as a command as well. Like the Quick Start shows you can do `tn r ipad` instead of `tn r --ipad`. If the first argument is a valid recipe name TiNy will turn it into a flag/option and continue as normal.
 
 ### Verbose mode
 If you want to know exactly what TiNy is doing, e.g. when you're composing a new recipe, you can enable verbose-mode by passing `--verbose` as one of the arguments. Apart from showing how TiNy cooks the end-result, it will also pause before actually executing it, asking if you want to save it as a recipe, just run it or exit.
