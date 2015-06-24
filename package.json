@@ -28,6 +28,7 @@
   },
   "preferGlobal": true,
   "dependencies": {
+    "appc-compat": "^1.0.0",
     "colors": "^1.0.3",
     "fields": "^0.1.23",
     "underscore": "^1.8.3",

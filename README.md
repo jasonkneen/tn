@@ -30,14 +30,14 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
 4. Build a project for iPhone 6 Simulator using the generated recipe:
 
 	```
-	tn r iphone-6
-	tn r iphone-6 --another-recipe
+	tn iphone-6
+	tn iphone-6 --another-recipe
 	```
 	
-	* Notice that since 3.0 is no longer a hook you need `tn r` or `tn b` - no more `ti`.
-	* Replace `r` with `b` to use `tn build` instead of `appc run`.
-	* Use `run` or `build` if you feel like typing more.
-	* Only the first recipe after `r` or `b` does not need to start with `--`.
+	* Notice that since 3.0 is no longer a hook and you ned `tn` instead of `ti`.
+	* Notice that since 4.0 you no longer need `tn r` or `tn b`, just use `tn`.
+	* Only the first recipe after `tn` does not need to start with `--`.
+	* If the recipes does end up giving a command as first arg, it will default to `build`
 	
 4. Compose a custom recipes mixing others (`--ah`) and an option value (`%s`):
 
@@ -53,7 +53,7 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
 5. Ship it:
 	
 	```
-	tn r ci "a great update"
+	tn ci "a great update"
 	```
 
 ## Recipes
@@ -69,7 +69,7 @@ Most recipes are flags, but a receipe can also be an option. If a recipe is foll
 ### Built-in recipes
 These are the current built-in recipes. If you have handy custom recipes you think everybody should have, please send a PR or open a ticket to have them added to the built-ins.
 
-* Don't forget that since 2.0 recipes are options and stary with `--`.
+* Don't forget that since 2.0 recipes are options and start with `--`.
 * Only the first recipe does not need to start with `--`.
 
 |name|recipe|
@@ -165,7 +165,7 @@ tn project reset                     # deletes the tn.json file
 ```
 
 #### Command recipes
-Any recipe can be used as a command as well. Like the Quick Start shows you can do `tn r ipad` instead of `tn r --ipad`. If the first argument is a valid recipe name TiNy will turn it into a flag/option and continue as normal.
+Any recipe can be used as a command as well. Like the Quick Start shows you can do `tn ipad` instead of `tn --ipad`. If the first argument is a valid recipe name TiNy will turn it into a flag/option and continue as normal.
 
 ### Verbose mode
 If you want to know exactly what TiNy is doing, e.g. when you're composing a new recipe, you can enable verbose-mode by passing `--verbose` as one of the arguments. Apart from showing how TiNy cooks the end-result, it will also pause before actually executing it, asking if you want to save it as a recipe, just run it or exit.
@@ -183,6 +183,7 @@ TiNy will resolve any duplicate options and flags in order of appearance.
 * Add more built-in recipes.
 
 ## Changelog
+* 4.0.0: Removed the need to use `tn r` or `tn b` thanks to [appc-compat](https://npmjs.com/appc-compat)
 * 3.0.0: Reverted TiNy from hook back to wrapper, supporting both `ti build` and `appc run`.
 * 2.3.0: Fixes for TiNy not to mess when run via Studio or AppC CLI
 * 2.2.0: Adds generating device/emulator/simulator recipes (`tn generate`).
