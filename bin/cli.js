@@ -89,10 +89,8 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
     setup.generate();
   }
 
-  // unknwon
+  // unknown
   else {
-
-    console.log(cmd, args);
 
     // deprecated
     if (cmd !== 'run' && cmd !== 'build' && cmd !== 'r' && cmd !== 'b') {
