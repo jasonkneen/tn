@@ -2,13 +2,17 @@
 
 'use strict';
 
+var fs = require('fs'),
+  path = require('path');
+
+var updateNotifier = require('update-notifier'),
+  compat = require('appc-compat');
+
 var pkg = require('../package.json'),
-  updateNotifier = require('update-notifier'),
   recipes = require('../lib/recipes'),
   setup = require('../lib/setup'),
   utils = require('../lib/utils'),
-  kitchen = require('../lib/kitchen'),
-  compat = require('appc-compat');
+  kitchen = require('../lib/kitchen');
 
 var args = process.argv.slice(2);
 
@@ -104,14 +108,28 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
 
     args = tray ? tray.dinner : args;
 
+    // try to detect if project is platform
+    var tiapp;
+
+    try {
+      tiapp = fs.readFileSync(path.join(process.cwd(), 'tiapp.xml'), {
+        encoding: 'utf-8'
+      });
+
+      // platform
+      if (tiapp.indexOf('appc-app-id') !== -1) {
+        args.preferAppc = true;
+      }
+    } catch (e) {}
+
     // Show what TiNy made (only for build and create, not to mess with JSON output)
-    console.log('TiNy'.cyan.bold + ' cooked: ' + ('[appc] ti ' + utils.join(args)).yellow + '\n');
+    console.log('TiNy'.cyan.bold + ' cooked: ' + ((args.preferAppc ? 'appc ti ' : 'ti ') + utils.join(args)).yellow + '\n');
 
     var eat = function () {
       compat.ti(args, {
         stdio: 'inherit'
       });
-    }
+    };
 
     // verbose prompt
     if (tray && tray.recipe) {
