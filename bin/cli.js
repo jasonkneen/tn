@@ -93,6 +93,11 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
     setup.generate();
   }
 
+  // no args
+  else if (!cmd) {
+    displayHelp();
+  }
+
   // unknown
   else {
 
@@ -103,6 +108,8 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
     } else {
       console.warn('DEPRECATED: '.red.bold + ' Use ' + 'tn'.yellow + ' instead of ' + ('tn ' + cmd).yellow + '\n');
     }
+
+    console.log(args);
 
     var tray = kitchen.cook(args);
 
