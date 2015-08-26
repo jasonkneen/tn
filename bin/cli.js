@@ -130,7 +130,7 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
     } catch (e) {}
 
     // Show what TiNy made (only for build and create, not to mess with JSON output)
-    console.log('TiNy'.cyan.bold + ' cooked: ' + ((args.preferAppc ? 'appc ti ' : 'ti ') + utils.join(args)).yellow + '\n');
+    console.log('TiNy'.cyan.bold + ' cooked: ' + ('[appc] ti ' + utils.join(args)).yellow + '\n');
 
     var eat = function () {
       compat.ti(args, {
