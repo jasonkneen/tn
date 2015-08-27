@@ -113,27 +113,29 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
 
     args = tray ? tray.dinner : args;
 
-    // try to detect if project is platform
-    var tiapp;
+    var opts = {
+      stdio: 'inherit'
+    };
 
+    // try to detect if project is platform
     try {
-      tiapp = fs.readFileSync(path.join(process.cwd(), 'tiapp.xml'), {
+
+      var tiapp = fs.readFileSync(path.join(process.cwd(), 'tiapp.xml'), {
         encoding: 'utf-8'
       });
 
       // platform
       if (tiapp.indexOf('appc-app-id') !== -1) {
-        args.preferAppc = true;
+        opts.preferAppc = true;
       }
+
     } catch (e) {}
 
     // Show what TiNy made (only for build and create, not to mess with JSON output)
     console.log('TiNy'.cyan.bold + ' cooked: ' + ('[appc] ti ' + utils.join(args)).yellow + '\n');
 
     var eat = function () {
-      compat.ti(args, {
-        stdio: 'inherit'
-      });
+      compat.ti(args, opts);
     };
 
     // verbose prompt
