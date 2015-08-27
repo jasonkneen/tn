@@ -109,8 +109,6 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
       console.warn('DEPRECATED: '.red.bold + ' Use ' + 'tn'.yellow + ' instead of ' + ('tn ' + cmd).yellow + '\n');
     }
 
-    console.log(args);
-
     var tray = kitchen.cook(args);
 
     args = tray ? tray.dinner : args;
