@@ -28,13 +28,13 @@
   },
   "preferGlobal": true,
   "dependencies": {
-    "appc-compat": "^1.0.0",
+    "appc-compat": "^1.0.3",
     "colors": "^1.0.3",
     "fields": "^0.1.23",
     "underscore": "^1.8.3",
-    "update-notifier": "^0.3.2"
+    "update-notifier": "^0.6.0"
   },
-  "license": "Apache Public License v2",
+  "license": "Apache-2.0",
   "bin": "./bin/cli.js",
   "main": "./main.js",
   "scripts": {

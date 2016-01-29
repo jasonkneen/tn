@@ -5,8 +5,7 @@
 var fs = require('fs'),
   path = require('path');
 
-var updateNotifier = require('update-notifier'),
-  compat = require('appc-compat');
+var compat = require('appc-compat');
 
 var pkg = require('../package.json'),
   recipes = require('../lib/recipes'),
@@ -74,7 +73,7 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
 
   // uninstall
   else if (cmd === 'uninstall') {
-    displayBanner();
+    displayBanner(false);
 
     setup.uninstall();
   }
@@ -178,7 +177,7 @@ function displayHelp() {
 function displayBanner(doUpdate) {
 
   if (doUpdate !== false) {
-    updateNotifier({
+    require('update-notifier')({
       packageName: pkg.name,
       packageVersion: pkg.version
     });
