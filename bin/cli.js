@@ -153,7 +153,7 @@ function displayHelp() {
 
   console.log('Commands:');
   console.log();
-  console.log('  *'.cyan + '\t\t\t' + 'cook recipes for ' + '[appc] ti build'.yellow + '.');
+  console.log('  *'.cyan + '\t\t\t\t' + 'cook recipes for ' + '[appc] ti build'.yellow + '.');
   console.log();
   console.log('  list, recipes'.cyan + '\t\t\t' + 'lists all recipes in the book.');
   console.log();
