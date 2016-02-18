@@ -11,10 +11,10 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
     ```
     [sudo] npm install -g tn --unsafe-perm
     ```
-    
+
     * You probably need `sudo` on Mac OS.
     * You need `--unsafe-perm` to allow TiNy to uninstall the 2.x hook if needed.
-    
+
 2. If for some reason uninstalling the 2.x hook failed, use the TiNY CLI to do so:
 
 	```
@@ -33,12 +33,12 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
 	tn iphone-6
 	tn iphone-6 --another-recipe
 	```
-	
+
 	* Notice that since 3.0 is no longer a hook and you ned `tn` instead of `ti`.
 	* Notice that since 4.0 you no longer need `tn r` or `tn b`, just use `tn`.
 	* Only the first recipe after `tn` does not need to start with `--`.
 	* If the recipes does end up giving a command as first arg, it will default to `build`
-	
+
 4. Compose a custom recipes mixing others (`--ah`) and an option value (`%s`):
 
 	```
@@ -49,9 +49,9 @@ TiNy is a wrapper for the [Appcelerator CLI](http://docs.appcelerator.com/platfo
 	--ah \
 	--installr --installr-release-notes %s
 	```
-	
+
 5. Ship it:
-	
+
 	```
 	tn ci "a great update"
 	```
@@ -84,6 +84,7 @@ These are the current built-in recipes. If you have handy custom recipes you thi
 |ip|--iphone|
 |universal|--device-family universal|
 |uni|--universal|
+|watch|--ios --launch-watch-app|
 |appstore|--ios --target dist-appstore|
 |as|--appstore|
 |playstore|--android --target dist-playstore|
@@ -176,7 +177,7 @@ If you want to know exactly what TiNy is doing, e.g. when you're composing a new
 TiNy will convert abbreviations (`-T`) to their full names (`--target`). It needs to this for the next feature.
 
 ### Resolving duplicates
-TiNy will resolve any duplicate options and flags in order of appearance. 
+TiNy will resolve any duplicate options and flags in order of appearance.
 
 ## Roadmap
 * Restore some of the smarts lost in the 2.0 rewrite.
@@ -187,7 +188,7 @@ TiNy will resolve any duplicate options and flags in order of appearance.
 * 3.0.0: Reverted TiNy from hook back to wrapper, supporting both `ti build` and `appc run`.
 * 2.3.0: Fixes for TiNy not to mess when run via Studio or AppC CLI
 * 2.2.0: Adds generating device/emulator/simulator recipes (`tn generate`).
-* 2.1.0: Re-introduces command recipes (and fixes `postinstall` for `npm link`). 
+* 2.1.0: Re-introduces command recipes (and fixes `postinstall` for `npm link`).
 * 2.0.0: Rewrite using traditional flags/options format for recipes.
 * 1.0.0: Rewrite dropping support for `T=emulator` and `T:emulator` notations.
 * 0.1.0: Original version.

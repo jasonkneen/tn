@@ -10,6 +10,7 @@
 	"ip": ["--iphone"],
 	"universal": ["--device-family", "universal"],
 	"uni": ["--universal"],
+	"watch": ["--ios", "--launch-watch-app"],
 
 	"appstore": ["--ios", "--target", "dist-appstore"],
 	"as": ["--appstore"],
