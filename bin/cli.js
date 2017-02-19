@@ -115,23 +115,27 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
     var opts = {
       stdio: 'inherit'
     };
-
-    // try to detect if project is platform
-    try {
-
-      var tiapp = fs.readFileSync(path.join(process.cwd(), 'tiapp.xml'), {
-        encoding: 'utf-8'
-      });
-
-      // platform
-      if (tiapp.indexOf('appc-app-id') !== -1) {
-        opts.preferAppc = true;
-      }
-
-    } catch (e) {}
     
-    if (process.argv.indexOf('--appc') > 0) {
+    if (process.argv.indexOf('--prefer-appc') !== -1) {
         opts.preferAppc = true;
+    }
+    else if (process.argv.indexOf('--prefer-ti') !== -1) {
+        opts.preferAppc = false;
+    }
+    else {
+      // try to detect if project is platform
+      try {
+
+        var tiapp = fs.readFileSync(path.join(process.cwd(), 'tiapp.xml'), {
+          encoding: 'utf-8'
+        });
+
+        // platform
+        if (tiapp.indexOf('appc-app-id') !== -1) {
+          opts.preferAppc = true;
+        }
+
+      } catch (e) {}
     }
 
     // Show what TiNy made (only for build and create, not to mess with JSON output)
