@@ -179,6 +179,8 @@ function displayHelp() {
   console.log('  -h, --help, help'.cyan + '\t\t' + 'displays help');
   console.log('  -v, --version, version'.cyan + '\t' + 'displays the current version');
   console.log('  --verbose'.cyan + '\t\t\t' + 'shows what\'s cooking and confirm or save the recipe');
+  console.log('  --prefer-appc'.cyan + '\t\t\t' + 'forces TiNy to run the recipe with $ appc [...]');
+  console.log('  --prefer-ti'.cyan + '\t\t\t' + 'forces TiNy to run the recipe with $ ti [...]');
   console.log();
 }
 
