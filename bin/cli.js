@@ -115,20 +115,28 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
     var opts = {
       stdio: 'inherit'
     };
-
-    // try to detect if project is platform
-    try {
-
-      var tiapp = fs.readFileSync(path.join(process.cwd(), 'tiapp.xml'), {
-        encoding: 'utf-8'
-      });
-
-      // platform
-      if (tiapp.indexOf('appc-app-id') !== -1) {
+    
+    if (process.argv.indexOf('--prefer-appc') !== -1) {
         opts.preferAppc = true;
-      }
+    }
+    else if (process.argv.indexOf('--prefer-ti') !== -1) {
+        opts.preferAppc = false;
+    }
+    else {
+      // try to detect if project is platform
+      try {
 
-    } catch (e) {}
+        var tiapp = fs.readFileSync(path.join(process.cwd(), 'tiapp.xml'), {
+          encoding: 'utf-8'
+        });
+
+        // platform
+        if (tiapp.indexOf('appc-app-id') !== -1) {
+          opts.preferAppc = true;
+        }
+
+      } catch (e) {}
+    }
 
     // Show what TiNy made (only for build and create, not to mess with JSON output)
     console.log('TiNy'.cyan.bold + ' cooked: ' + ('[appc] ti ' + utils.join(args)).yellow + '\n');
@@ -171,6 +179,8 @@ function displayHelp() {
   console.log('  -h, --help, help'.cyan + '\t\t' + 'displays help');
   console.log('  -v, --version, version'.cyan + '\t' + 'displays the current version');
   console.log('  --verbose'.cyan + '\t\t\t' + 'shows what\'s cooking and confirm or save the recipe');
+  console.log('  --prefer-appc'.cyan + '\t\t\t' + 'forces TiNy to run the recipe with $ appc [...]');
+  console.log('  --prefer-ti'.cyan + '\t\t\t' + 'forces TiNy to run the recipe with $ ti [...]');
   console.log();
 }
 
