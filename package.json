@@ -18,13 +18,13 @@
   },
   "maintainers": [
     {
-      "name": "Fokke Zandbergen",
-      "email": "mail@fokkezb.nl"
+      "name": "Jason Kneen",
+      "email": "jason@bouncingfish.com"
     }
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/fokkezb/tn.git"
+    "url": "git://github.com/jasonkneen/tn.git"
   },
   "preferGlobal": true,
   "dependencies": {
@@ -46,8 +46,8 @@
   "engines": {
     "node": ">=0.8"
   },
-  "homepage": "http://fokkezb.nl/tag/tiny",
+  "homepage": "http://www.bouncingfish.com",
   "bugs": {
-    "url": "https://github.com/fokkezb/tn/issues"
+    "url": "https://github.com/jasonkneen/tn/issues"
   }
 }

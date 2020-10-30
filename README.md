@@ -151,7 +151,7 @@ You can generate user recipes for all connected devices, emulators and simulator
 ```
   iphone-5s: --platform ios --target simulator --device-id 2592EB13-534C-4E05-8D58-110D0261BDE3
   iphone-5s-ios71: --platform ios --target simulator --device-id 2AE900F4-4349-4AD9-9AC4-CFD881BD5877
-  iphone-fokke: --platform ios --target device --device-id daf492502fffe744842280370ed6dcc740eda657
+  iphone-jason: --platform ios --target device --device-id daf492502fffe744842280370ed6dcc740eda657
   samsung-galaxy-s4-43-api-18-1080x1920: --platform android --target emulator --device-id "Samsung Galaxy S4 - 4.3 - API 18 - 1080x1920"
 ```
 
@@ -184,6 +184,8 @@ TiNy will resolve any duplicate options and flags in order of appearance.
 * Add more built-in recipes.
 
 ## Changelog
+* 4.2.1: Fixes issue generating certain simulators with special characters in their names
+* 4.2.0: Adds --prefer-appc and --prefer-ti to override automatic detection to use appc or ti CLI.
 * 4.0.0: Removed the need to use `tn r` or `tn b` thanks to [appc-compat](https://npmjs.com/appc-compat)
 * 3.0.0: Reverted TiNy from hook back to wrapper, supporting both `ti build` and `appc run`.
 * 2.3.0: Fixes for TiNy not to mess when run via Studio or AppC CLI
@@ -194,12 +196,12 @@ TiNy will resolve any duplicate options and flags in order of appearance.
 * 0.1.0: Original version.
 
 ## Bugs
-When you find issues, please [report](https://github.com/FokkeZB/gittio/issues) them. Be sure to include *all* of the output from the gittio command that didn't work as expected. Also please check if there's not already in issue for it.
+When you find issues, please [report](https://github.com/jasonkneen/tn/issues) them. Be sure to include *all* of the output from the gittio command that didn't work as expected. Also please check if there's not already in issue for it.
 
 ## License
 
 <pre>
-Copyright 2013-2015 Fokke Zandbergen
+Copyright (c) 2016-2021, Jason Kneen.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

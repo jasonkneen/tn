@@ -195,6 +195,6 @@ function displayBanner(doUpdate) {
 
   // display banner
   console.log('TiNy'.cyan.bold + ', version ' + pkg.version);
-  console.log('Copyright (c) 2013-2015, Fokke Zandbergen.  All Rights Reserved.');
+  console.log('Copyright (c) 2016-2021, Jason Kneen. All Rights Reserved.');
   console.log();
 }
