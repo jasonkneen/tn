@@ -1,8 +1,8 @@
-# TiNy CLI [![Titanium](https://tidev.io/img/tilogo.png)](https://titaniumsdk.com)
+# TiNy CLI
 
-TiNy is a modern CLI wrapper for [Titanium SDK](https://titaniumsdk.com) that allows you to build iOS and Android apps using fewer keystrokes. It has built-in recipes for common build configurations, and allows you to compose and save your own custom recipes.
+TiNy is a CLI wrapper for [Titanium SDK](https://titaniumsdk.com) that lets you build iOS and Android apps with fewer keystrokes. It ships with built-in recipes for common build configurations and lets you compose and save your own.
 
-**Version 5.0.0** is fully modernized for 2025 with enhanced security, Node.js 18+ support, modern dependencies, and focuses exclusively on current mobile platforms (iOS & Android).
+Version 5.4.1 requires Node.js 18+ and targets iOS and Android only.
 
 ## Quick Start [![npm](http://img.shields.io/npm/v/tn.png)](https://www.npmjs.org/package/tn)
 
@@ -70,64 +70,108 @@ Colors will show you which recipes are built-in, user and user-overrides.
 
 ### Option recipes
 
-Most recipes are flags, but a receipe can also be an option. If a recipe is followed by an argument value, TiNy assumes the recipe to be an option and replace any occurences of `%s` in the recipe with the value. See step 4 of the Quick Start for an example.
+Most recipes are flags, but a recipe can also be an option. If a recipe is followed by an argument value, TiNy assumes the recipe to be an option and replace any occurrences of `%s` in the recipe with the value. See step 4 of the Quick Start for an example.
 
 ### Built-in recipes
 
-TiNy includes comprehensive built-in recipes for modern mobile development. All recipes support the current Titanium SDK platforms and device types.
+The built-in recipes cover the most common build configurations. A few things worth knowing:
 
-**Recipe Usage:**
+- Recipes expand to full Titanium CLI arguments
+- The first recipe in a command doesn't need the `--` prefix
+- Multiple recipes can be combined in a single command
 
-- Recipes are command-line flags that expand to full Titanium CLI arguments
-- When used as the first argument, recipes don't need the `--` prefix
-- Recipes can be combined and chained for complex build configurations
+**Apple / iOS**
 
-| name              | recipe                                                 |
-| ----------------- | ------------------------------------------------------ |
-| android           | --platform android                                     |
-| ios               | --platform ios                                         |
-| ipad              | --device-family ipad                                   |
-| iphone            | --device-family iphone                                 |
-| ip                | --iphone                                               |
-| universal         | --device-family universal                              |
-| uni               | --universal                                            |
-| watch             | --ios --launch-watch-app                               |
-| mac               | --platform ios --target macos                          |
-| catalyst          | --mac                                                  |
-| appstore          | --ios --target dist-appstore                           |
-| as                | --appstore                                             |
-| macstore          | --ios --target dist-macappstore                        |
-| playstore         | --android --target dist-playstore                      |
-| play              | --playstore                                            |
-| ps                | --playstore                                            |
-| adhoc             | --ios --target dist-adhoc                              |
-| ah                | --adhoc                                                |
-| emulator          | --target emulator                                      |
-| emu               | --emulator                                             |
-| simulator         | --target simulator                                     |
-| sim               | --simulator                                            |
-| device            | --target device                                        |
-| ioses             | --ios --device --device-id all                         |
-| droid             | --android --device                                     |
-| desktop           | -output-dir ~/Desktop                                  |
-| ip18              | --sim-version 18.6 --sim-type iphone                   |
-| ip26              | --sim-version 26.1 --sim-type iphone                   |
-| ipad18            | --sim-version 18.6 --sim-type ipad                     |
-| ipad26            | --sim-version 26.1 --sim-type ipad                     |
-| key-password      | --key-password %s --key-password %s --platform android |
-| android-sdk       | --android-sdk %s --platform android                    |
-| avd-abi           | --avd-abi %s --platform android                        |
-| keystore          | --keystore %s --platform android                       |
-| alias             | --alias %s --platform android                          |
-| store-password    | --store-password %s --platform android                 |
-| device-family     | --device-family %s --platform ios                      |
-| ios-version       | --ios-version %s --platform ios                        |
-| pp-uuid           | --pp-uuid %s --platform ios                            |
-| distribution-name | --distribution-name %s --platform ios                  |
-| sim-version       | --sim-version %s --target simulator --platform ios     |
-| keychain          | --keychain %s --platform ios                           |
-| developer-name    | --developer-name %s --target device --platform ios     |
-| sim-type          | --sim-type %s --target simulator --platform ios        |
+| name      | recipe                        |
+| --------- | ----------------------------- |
+| ios       | --platform ios                |
+| ip        | --iphone                      |
+| ipad      | --device-family ipad          |
+| iphone    | --device-family iphone        |
+| mac       | --platform ios --target macos |
+| catalyst  | --mac                         |
+| sim       | --simulator                   |
+| simulator | --target simulator            |
+| uni       | --universal                   |
+| universal | --device-family universal     |
+| watch     | --ios --launch-watch-app      |
+
+**Android**
+
+| name     | recipe             |
+| -------- | ------------------ |
+| android  | --platform android |
+| droid    | --android --device |
+| emu      | --emulator         |
+| emulator | --target emulator  |
+
+**Distribution**
+
+| name      | recipe                            |
+| --------- | --------------------------------- |
+| appstore  | --ios --target dist-appstore      |
+| as        | --appstore                        |
+| macstore  | --ios --target dist-macappstore   |
+| adhoc     | --ios --target dist-adhoc         |
+| ah        | --adhoc                           |
+| playstore | --android --target dist-playstore |
+| play      | --playstore                       |
+| ps        | --playstore                       |
+
+**iOS Devices**
+
+| name  | recipe                         |
+| ----- | ------------------------------ |
+| ioses | --ios --device --device-id all |
+
+**Aliases**
+
+Short forms for commonly used recipes. Each alias expands to a single flag that maps to an existing recipe.
+
+| alias    | expands to |
+| -------- | ---------- |
+| ah       | adhoc      |
+| as       | appstore   |
+| catalyst | mac        |
+| emu      | emulator   |
+| ip       | iphone     |
+| play     | playstore  |
+| ps       | playstore  |
+| sim      | simulator  |
+| uni      | universal  |
+
+**Misc**
+
+| name    | recipe                |
+| ------- | --------------------- |
+| desktop | -output-dir ~/Desktop |
+| device  | --target device       |
+
+**Parametric recipes (iOS)**
+
+These recipes accept a value that replaces `%s` in the expanded command. Useful when composing custom recipes with `tn save`.
+
+| name              | recipe                                             | description                                                         |
+| ----------------- | -------------------------------------------------- | ------------------------------------------------------------------- |
+| device-family     | --device-family %s --platform ios                  | Target device family: `iphone`, `ipad`, or `universal`              |
+| developer-name    | --developer-name %s --target device --platform ios | Developer certificate name for device builds (e.g. `"John (T3AM)"`) |
+| distribution-name | --distribution-name %s --platform ios              | Distribution certificate name for App Store or Ad Hoc signing       |
+| ios-version       | --ios-version %s --platform ios                    | Target iOS SDK version (e.g. `18.0`)                                |
+| keychain          | --keychain %s --platform ios                       | Path to the macOS keychain file containing signing certificates     |
+| pp-uuid           | --pp-uuid %s --platform ios                        | Provisioning Profile UUID for app signing                           |
+| sim-type          | --sim-type %s --target simulator --platform ios    | Simulator type: `iphone` or `ipad`                                  |
+| sim-version       | --sim-version %s --target simulator --platform ios | iOS version of the simulator to target (e.g. `18.6`)                |
+
+**Parametric recipes (Android)**
+
+| name           | recipe                                 | description                                                          |
+| -------------- | -------------------------------------- | -------------------------------------------------------------------- |
+| alias          | --alias %s --platform android          | Keystore entry alias (the name given when the key was created)       |
+| android-sdk    | --android-sdk %s --platform android    | Override the path to the Android SDK installation                    |
+| avd-abi        | --avd-abi %s --platform android        | ABI architecture of the emulator (e.g. `x86_64`, `arm64-v8a`)        |
+| key-password   | --key-password %s --platform android   | Password for the signing key inside the keystore                     |
+| keystore       | --keystore %s --platform android       | Path to the `.keystore` file used to sign the APK/AAB                |
+| store-password | --store-password %s --platform android | Password for the keystore file itself (distinct from `key-password`) |
 
 ### Custom recipes
 
@@ -150,6 +194,36 @@ You can generate user recipes for all connected devices, emulators and simulator
   ipad-air-13-inch-m3: --platform ios --target simulator --device-id CE9F76E4-FF32-4E99-9005-71F69BDE01C1
   pixel-8-pro-api-34: --platform android --target emulator --device-id "Pixel 8 Pro API 34"
 ```
+
+If `tn generate` finds user recipes pointing to iOS simulators or Android emulators that are no longer installed (e.g. after uninstalling an iOS Simulator runtime in Xcode), it lists them and asks whether to remove them. Physical device recipes are never touched.
+
+##### Cleaning up simulators
+
+Xcode does not clean up after itself. Uninstall an iOS runtime and its simulators stay in `~/Library/Developer/CoreSimulator/Devices` forever: they still show up in `simctl list`, they can never be booted again, and they can easily take tens of gigabytes.
+
+`tn clean` deletes them:
+
+```bash
+tn clean                    # delete simulators whose runtime is gone
+tn clean --data             # erase contents and settings, keep the simulators
+tn clean --runtimes         # delete installed runtimes you pick from a list
+tn clean --data --runtimes  # flags combine
+```
+
+With no flags it only removes the unusable ones, which is always safe. Every operation lists what it found, shows how much disk space it would free, and asks before deleting anything — the prompt defaults to no.
+
+`--data` deletes the apps installed in each simulator and their data, keeping the simulators themselves. Booted simulators are skipped.
+
+`--runtimes` lets you pick which runtimes to delete, with their size and last use date shown, and warns you if you pick the newest one you have. Deleting a runtime makes its simulators unusable, so those are removed in the same run and any recipes left pointing at them are offered for removal.
+
+`tn generate` reports leftover simulators when it finds them, so you know they are there:
+
+```
+[WARN]  11 ghost simulators found — their runtime is no longer installed
+        Run  tn clean  to remove them and free up disk space.
+```
+
+Android emulators are not touched by `tn clean`.
 
 #### Project recipes
 
@@ -228,7 +302,7 @@ tn release
 
 ### Resolving aliases
 
-TiNy will convert abbreviations (`-T`) to their full names (`--target`). It needs to this for the next feature.
+TiNy converts abbreviations (`-T`) to their full names (`--target`) to support duplicate resolution.
 
 ### Resolving duplicates
 
@@ -236,32 +310,27 @@ TiNy will resolve any duplicate options and flags in order of appearance.
 
 ## Features
 
-### Modern Architecture (v5.0.0)
+### Changes in v5.0.0
 
-- **Node.js 18+ Support**: Fully compatible with modern Node.js versions
-- **Enhanced Security**: Updated all dependencies to latest secure versions
-- **Modern Dependencies**: Uses lodash, chalk, @inquirer/prompts for better performance
-- **Code Quality**: ESLint 8, Prettier formatting, comprehensive testing setup
+- Requires Node.js 18+ (Titanium CLI needs 20.18.1+)
+- Switched to lodash, chalk, and @inquirer/prompts
+- Dropped support for platforms other than iOS and Android
+- Added ESLint 8 and Prettier
 
-### Device Management
+### Device management
 
-- **Automatic Discovery**: `tn generate` detects all connected iOS simulators and Android emulators
-- **Current Devices**: Supports iPhone 16 series, iPad Air M3, iPad Pro M4, latest Android emulators
-- **Real Device Support**: Works with physical iOS and Android devices
+`tn generate` detects all connected iOS simulators, Android emulators, and physical devices and writes a recipe for each. Supports current hardware including iPhone 16 series, iPad Air M3, iPad Pro M4, and recent Android emulators.
 
-### Recipe System
+### Recipe system
 
-- **Built-in Recipes**: 50+ pre-configured recipes for common build scenarios
-- **Custom Recipes**: Save, edit, and share your own recipe configurations
-- **Project Recipes**: Per-project recipe files for team collaboration
-- **Recipe Chaining**: Combine multiple recipes in a single command
+Ships with 40+ built-in recipes. Save your own with `tn save`, keep per-project recipes in `tn.json`, and chain multiple recipes in a single command.
 
-### Developer Experience
+### Other
 
-- **Interactive Prompts**: Modern CLI prompts for recipe management and execution
-- **Verbose Mode**: Detailed output showing recipe expansion and build process
-- **Safety Features**: Protection against accidental configuration deletion
-- **Modern CLI**: Uses Titanium SDK CLI (`ti`) exclusively
+- `--verbose` shows each expansion step and the final command before running
+- Interactive prompts let you save or cancel before executing
+- Safety checks prevent accidental deletion of recipe files
+- Uses Titanium SDK CLI (`ti`) exclusively
 
 ## Changelog
 

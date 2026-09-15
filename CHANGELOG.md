@@ -5,6 +5,54 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [5.4.1] - 2026-09-15
+
+### Fixed
+
+- `tn generate` no longer saves a second recipe for a simulator that already has one. With two simulators of the same name, the second one is saved as `<name>-ios186`; once the first was deleted and its recipe pruned, the next run saved the plain name again, leaving two recipes launching the same simulator. The existing recipe is kept as it is.
+
+## [5.4.0] - 2026-07-30
+
+### Added
+
+- `tn clean` deletes iOS simulators whose runtime is no longer installed. Xcode leaves these behind when a runtime is uninstalled: they still appear in `simctl list`, can never be booted, and take up disk space indefinitely. The command lists what it found grouped by runtime, reports how much space it frees, and asks before deleting anything.
+- `tn clean --data` erases contents and settings of installed simulators, keeping the simulators themselves. Booted simulators are skipped.
+- `tn clean --runtimes` deletes installed iOS runtimes chosen from a list showing size and last use date, warning when the newest installed runtime is selected. Because deleting a runtime makes its simulators unusable, those are removed in the same run and any recipes left pointing at them are offered for removal.
+- `tn generate` reports leftover simulators when it finds them, pointing at `tn clean`.
+
+### Fixed
+
+- `tn generate` no longer regenerated recipes for simulators whose runtime had been uninstalled and then immediately reported them as orphaned, in a loop that repeated on every run. `ti info` still lists those simulators, so the `simctl` check that was already used to detect orphans is now applied when generating too.
+- `tn generate` no longer offers to remove every recipe of a platform that `ti info` did not report at all (for instance an unconfigured Android SDK). An empty device list now means "nothing installed" only when the platform was actually inspected; otherwise its recipes are left alone.
+- Pressing Ctrl+C at a confirmation prompt exits cleanly instead of printing an `ExitPromptError` stack trace.
+- A malformed `~/.tn.json` or `tn.json` no longer takes down every command with a stack trace. The broken file is reported by name and skipped, so `tn list` still works and can be used to find the problem.
+- `tn generate` reports a clear message when `ti info` returns something that is not JSON, or when the Titanium CLI is not installed, instead of crashing.
+- The `postinstall` script no longer fails with a stack trace when the Titanium CLI is absent.
+- `tn rename` rebuilt its recipe list without project recipes, dropping them until the next run.
+
+### Changed
+
+- Recipe files are written indented instead of on a single line. They are meant to be opened and edited by hand.
+- Informational messages are printed without an `[INFO]` label. When every line carries one it conveys nothing, and it made warnings and errors blend into the output. `[WARN]`, `[ERROR]` and `[DEBUG]` keep theirs and now stand out.
+
+## [5.3.0] - 2026-03-01
+
+### Added
+
+- `tn list` now groups recipes into 8 labeled categories: iPhone Simulators, iPad Simulators, Android Emulators, iOS Devices, Android Devices, Distribution, Aliases, and General. Within each group, built-in recipes appear before user recipes. The General group is visually sub-clustered by platform (Apple/iOS, Android, parametric, misc) using blank lines.
+- `tn generate` shows `[INFO] All recipes are up to date.` when no new recipes are found.
+
+### Fixed
+
+- `tn generate` no longer creates duplicate `-iosXXX` recipes on repeated runs. Two bugs caused it: the same UDID reported under multiple iOS versions by `ti info`, and simulators that only appear under an older iOS version gaining a new suffix on every subsequent run even when their UDID was unchanged.
+
+### Changed
+
+- `tn generate` output is compact: only newly saved recipes are printed, not every device `ti info` finds.
+- README recipe tables restructured to match the grouped `tn list` output. Aliases now have their own section. All parametric recipes include descriptions.
+
 ## [5.2.0] - 2026-02-05
 
 ### Added

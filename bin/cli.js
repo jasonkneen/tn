@@ -6,6 +6,7 @@ const { spawn } = require('child_process');
 const chalk = require('chalk');
 
 const pkg = require('../package.json'),
+  clean = require('../lib/clean'),
   recipes = require('../lib/recipes'),
   setup = require('../lib/setup'),
   utils = require('../lib/utils'),
@@ -88,6 +89,13 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
     setup.generate();
   }
 
+  // clean
+  else if (cmd === 'clean') {
+    displayBanner();
+
+    clean.run(args).catch(handlePromptExit);
+  }
+
   // no args
   else if (!cmd) {
     displayHelp();
@@ -137,6 +145,20 @@ else if (cmd === '-v' || cmd === '--version' || cmd === 'version') {
   }
 }
 
+// Ctrl+C at a prompt is a normal way to say no, not a crash. Without this the
+// user gets an ExitPromptError stack trace.
+function handlePromptExit(err) {
+  if (err && err.name === 'ExitPromptError') {
+    console.log();
+    return;
+  }
+
+  throw err;
+}
+
+// generate() prompts from inside a spawn callback, so its rejection surfaces here
+process.on('unhandledRejection', handlePromptExit);
+
 // help
 function displayHelp() {
   displayBanner();
@@ -184,6 +206,16 @@ function displayHelp() {
       'generates simulators/device user-recipes (' +
       chalk.yellow('tn iphone6plus') +
       ')'
+  );
+  console.log();
+  console.log(
+    '  ' + chalk.cyan('clean') + '\t\t\t\t' + 'deletes iOS simulators whose runtime is gone'
+  );
+  console.log(
+    '  ' + chalk.cyan('clean --data') + '\t\t\t' + 'erases contents and settings, keeps simulators'
+  );
+  console.log(
+    '  ' + chalk.cyan('clean --runtimes') + '\t\t' + 'deletes installed iOS runtimes you pick'
   );
   console.log();
   console.log(

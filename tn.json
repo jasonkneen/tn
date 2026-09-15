@@ -29,12 +29,7 @@
 
 	"desktop": ["-output-dir", "~/Desktop"],
 
-	"ip18": ["--sim-version", "18.6", "--sim-type", "iphone"],
-	"ip26": ["--sim-version", "26.1", "--sim-type", "iphone"],
-	"ipad18": ["--sim-version", "18.6", "--sim-type", "ipad"],
-	"ipad26": ["--sim-version", "26.1", "--sim-type", "ipad"],
-
-	"key-password": ["--key-password", "%s", "--key-password", "%s", "--platform", "android"],
+	"key-password": ["--key-password", "%s", "--platform", "android"],
 	"android-sdk": ["--android-sdk", "%s", "--platform", "android"],
 	"avd-abi": ["--avd-abi", "%s", "--platform", "android"],
 	"keystore": ["--keystore", "%s", "--platform", "android"],

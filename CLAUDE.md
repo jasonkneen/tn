@@ -24,6 +24,8 @@ TiNy is a CLI wrapper for Titanium SDK build commands that provides "recipe" sho
 - **`lib/kitchen.js`**: Core recipe processing engine that "cooks" arguments
 - **`lib/recipes.js`**: Recipe management (load, save, list recipes from multiple sources)
 - **`lib/setup.js`**: Handles device/simulator recipe generation and 2.x hook removal
+- **`lib/clean.js`**: `tn clean` — removes ghost simulators, simulator data and runtimes
+- **`lib/simctl.js`**: Wrapper around `xcrun simctl`; every lookup returns null on failure
 - **`lib/utils.js`**: Utility functions for argument processing
 - **`lib/config.js`**: Configuration management
 - **`lib/logger.js`**: Logging utilities
@@ -58,8 +60,10 @@ Recipes can be:
 
 ## Development Notes
 
-- The project uses JSHint for linting (see `.jshintrc`)
-- No test framework is configured
+- Linting is ESLint (`.eslintrc.js`), run with `npm run lint` / `npm run lint:fix`. A stale `.jshintrc` is still in the repo but nothing uses it.
+- Formatting is Prettier: `npm run format` / `npm run format:check`
+- Tests are Jest (`npm test`), in `test/`. `test/generate.test.js` runs `tn generate` against a faked `ti info` and `simctl` with a temporary `~/.tn.json`
 - Uses CommonJS modules (`require`/`exports`)
-- Supports Node.js >=0.8
+- Requires Node.js >=18 (see `engines` in `package.json`)
 - Main binary is executable via `./bin/cli.js`
+- Recipe files are written indented, since users edit them by hand
